@@ -479,7 +479,7 @@ class Installer
             $this->dispatchStepEvent('install_classes');
             $this->installClasses();
         }
-        
+
         if (in_array('mark_migrations_as_done', $stepsToRun)) {
             $this->dispatchStepEvent('migrations');
             $this->markMigrationsAsDone();
