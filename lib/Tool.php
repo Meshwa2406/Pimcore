@@ -16,7 +16,10 @@ declare(strict_types=1);
 
 namespace Pimcore;
 
+use Exception;
 use GuzzleHttp\RequestOptions;
+use Locale;
+use Pimcore;
 use Pimcore\Http\RequestHelper;
 use Pimcore\Localization\LocaleServiceInterface;
 use Pimcore\Model\Element;
@@ -27,7 +30,6 @@ final class Tool
     /**
      * Sets the current request to use when resolving request at early
      * stages (before container is loaded)
-     *
      */
     private static ?Request $currentRequest = null;
 
@@ -39,7 +41,6 @@ final class Tool
 
     /**
      * Sets the current request to operate on
-     *
      *
      * @internal
      */
@@ -87,8 +88,6 @@ final class Tool
      * Returns an array of language codes that configured for this system
      * in pimcore's system settings at "Localization & Internationalization (i18n/l10n)".
      * An empty array is returned if no languages are configured.
-     *
-     * @static
      *
      * @return string[]
      */
@@ -158,7 +157,6 @@ final class Tool
      * Returns the default language for this system. If no default is set,
      * returns the first language, or null, if no languages are configured
      * at all.
-     *
      */
     public static function getDefaultLanguage(): ?string
     {
@@ -178,11 +176,11 @@ final class Tool
     /**
      * @return array<string, string>
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public static function getSupportedLocales(): array
     {
-        $localeService = \Pimcore::getContainer()->get(LocaleServiceInterface::class);
+        $localeService = Pimcore::getContainer()->get(LocaleServiceInterface::class);
         $locale = $localeService->findLocale();
 
         $cacheKey = 'system_supported_locales_' . strtolower((string) $locale);
@@ -191,8 +189,8 @@ final class Tool
 
             $languageOptions = [];
             foreach ($languages as $code) {
-                $translation = \Locale::getDisplayLanguage($code, $locale);
-                $displayRegion = \Locale::getDisplayRegion($code, $locale);
+                $translation = Locale::getDisplayLanguage($code, $locale);
+                $displayRegion = Locale::getDisplayRegion($code, $locale);
 
                 if ($displayRegion) {
                     $translation .= ' (' . $displayRegion . ')';
@@ -218,11 +216,11 @@ final class Tool
      *
      * @return array<string, string>
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public static function getSupportedJSLocales(): array
     {
-        $localeService = \Pimcore::getContainer()->get(LocaleServiceInterface::class);
+        $localeService = Pimcore::getContainer()->get(LocaleServiceInterface::class);
         $locale = $localeService->findLocale();
 
         $cacheKey = 'system_supported_js_locales_' . strtolower((string)$locale);
@@ -236,8 +234,8 @@ final class Tool
                 }
                 $codeBCP = str_replace('_', '-', $code);
 
-                $displayName = \Locale::getDisplayName($code, $locale);
-                $displayRegion = \Locale::getDisplayRegion($code, $locale);
+                $displayName = Locale::getDisplayName($code, $locale);
+                $displayRegion = Locale::getDisplayRegion($code, $locale);
 
                 if ($displayRegion) {
                     $translation = $displayRegion . ' [' . $codeBCP . ']';
@@ -260,8 +258,8 @@ final class Tool
     {
         if (null === $request) {
             // do an extra check for the container as we might be in a state where no container is set yet
-            if (\Pimcore::hasContainer()) {
-                $request = \Pimcore::getContainer()->get('request_stack')->getMainRequest();
+            if (Pimcore::hasContainer()) {
+                $request = Pimcore::getContainer()->get('request_stack')->getMainRequest();
             } else {
                 if (null !== self::$currentRequest) {
                     return self::$currentRequest;
@@ -275,22 +273,20 @@ final class Tool
     public static function isFrontend(Request $request = null): bool
     {
         if (null === $request) {
-            $request = \Pimcore::getContainer()->get('request_stack')->getMainRequest();
+            $request = Pimcore::getContainer()->get('request_stack')->getMainRequest();
         }
 
         if (null === $request) {
             return false;
         }
 
-        return \Pimcore::getContainer()
+        return Pimcore::getContainer()
             ->get(RequestHelper::class)
             ->isFrontendRequest($request);
     }
 
     /**
      * eg. editmode, preview, version preview, always when it is a "frontend-request", but called out of the admin
-     *
-     *
      */
     public static function isFrontendRequestByAdmin(Request $request = null): bool
     {
@@ -300,15 +296,13 @@ final class Tool
             return false;
         }
 
-        return \Pimcore::getContainer()
+        return Pimcore::getContainer()
             ->get(RequestHelper::class)
             ->isFrontendRequestByAdmin($request);
     }
 
     /**
      * Verify element request (eg. editmode, preview, version preview) called within admin, with permissions.
-     *
-     *
      */
     public static function isElementRequestByAdmin(Request $request, Element\ElementInterface $element): bool
     {
@@ -323,8 +317,6 @@ final class Tool
 
     /**
      * @internal
-     *
-     *
      */
     public static function useFrontendOutputFilters(Request $request = null): bool
     {
@@ -348,7 +340,7 @@ final class Tool
         );
 
         // check for manually disabled ?pimcore_outputfilters_disabled=true
-        if (in_array('pimcore_outputfilters_disabled', $requestKeys) && \Pimcore::inDebugMode()) {
+        if (in_array('pimcore_outputfilters_disabled', $requestKeys) && Pimcore::inDebugMode()) {
             return false;
         }
 
@@ -357,8 +349,6 @@ final class Tool
 
     /**
      * @internal
-     *
-     *
      */
     public static function getHostname(Request $request = null): ?string
     {
@@ -376,7 +366,6 @@ final class Tool
 
     /**
      * @internal
-     *
      */
     public static function getRequestScheme(Request $request = null): string
     {
@@ -393,7 +382,6 @@ final class Tool
      * Returns the host URL
      *
      * @param string|null $useProtocol use a specific protocol
-     *
      */
     public static function getHostUrl(string $useProtocol = null, Request $request = null): string
     {
@@ -433,8 +421,6 @@ final class Tool
 
     /**
      * @internal
-     *
-     *
      */
     public static function getClientIp(Request $request = null): ?string
     {
@@ -462,8 +448,6 @@ final class Tool
 
     /**
      * @internal
-     *
-     *
      */
     public static function getAnonymizedClientIp(Request $request = null): ?string
     {
@@ -473,15 +457,13 @@ final class Tool
             return null;
         }
 
-        return \Pimcore::getContainer()
+        return Pimcore::getContainer()
             ->get(RequestHelper::class)
             ->getAnonymizedClientIp($request);
     }
 
     /**
-     *
-     *
-     * @throws \Exception
+     * @throws Exception
      */
     public static function getMail(array|string $recipients = null, string $subject = null): Mail
     {
@@ -506,7 +488,7 @@ final class Tool
 
     public static function getHttpData(string $url, array $paramsGet = [], array $paramsPost = [], array $options = []): false|string
     {
-        $client = \Pimcore::getContainer()->get('pimcore.http_client');
+        $client = Pimcore::getContainer()->get('pimcore.http_client');
         $requestType = 'GET';
 
         if (!isset($options['timeout'])) {
@@ -541,15 +523,13 @@ final class Tool
             if ($response->getStatusCode() < 300) {
                 return (string)$response->getBody();
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
         }
 
         return false;
     }
 
     /**
-     *
-     *
      * @internal
      */
     public static function classExists(string $class): bool
@@ -558,8 +538,6 @@ final class Tool
     }
 
     /**
-     *
-     *
      * @internal
      */
     public static function interfaceExists(string $class): bool
@@ -568,8 +546,6 @@ final class Tool
     }
 
     /**
-     *
-     *
      * @internal
      */
     public static function traitExists(string $class): bool
@@ -633,7 +609,7 @@ final class Tool
         $dirs = array_map('basename', $dirs);
         $dirs = array_filter($dirs, function ($value) {
             // this filters out "old" build directories, which end with a ~
-            return !(bool) \preg_match('/~$/', $value);
+            return !(bool) preg_match('/~$/', $value);
         });
 
         return array_values($dirs);
