@@ -62,10 +62,6 @@ final class Tool
      * settings at "Localization & Internationalization (i18n/l10n)".
      * Returns true, if the language is valid or no language is
      * configured at all, false otherwise.
-     *
-     * @static
-     *
-     *
      */
     public static function isValidLanguage(?string $language): bool
     {
