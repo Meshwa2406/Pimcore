@@ -109,7 +109,7 @@ class EncryptedField extends Data implements ResourcePersistenceAwareInterface, 
     /**
      * @throws Exception
      */
-    private function decrypt(mixed $data, ?Model\DataObject\Concrete $object, array $params): ?string
+    private function decrypt(mixed $data, ?Model\DataObject\Concrete $object, array $params): mixed
     {
         if ($data) {
             try {
@@ -177,7 +177,7 @@ class EncryptedField extends Data implements ResourcePersistenceAwareInterface, 
     /**
      * @see Data::getDataForEditmode
      */
-    public function getDataForEditmode(mixed $data, DataObject\Concrete $object = null, array $params = []): ?string
+    public function getDataForEditmode(mixed $data, DataObject\Concrete $object = null, array $params = []): mixed
     {
         $fd = $this->getDelegateDatatypeDefinition();
         if ($fd) {
