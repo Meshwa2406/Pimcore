@@ -650,12 +650,12 @@ class Video extends Model\Document\Editable implements IdRewriterInterface
                 if (in_array($key, $validYoutubeParams)) {
                     if (is_bool($value)) {
                         if ($value) {
-                            $additionalParams .= '&'.$key.'=1';
+                            $additionalParams .= '&amp;'.$key.'=1';
                         } else {
-                            $additionalParams .= '&'.$key.'=0';
+                            $additionalParams .= '&amp;'.$key.'=0';
                         }
                     } else {
-                        $additionalParams .= '&'.$key.'='.$value;
+                        $additionalParams .= '&amp;'.$key.'='.$value;
                     }
                 }
             }
@@ -728,12 +728,12 @@ class Video extends Model\Document\Editable implements IdRewriterInterface
                     if (in_array($key, $validVimeoParams)) {
                         if (is_bool($value)) {
                             if ($value) {
-                                $additionalParams .= '&'.$key.'=1';
+                                $additionalParams .= '&amp;'.$key.'=1';
                             } else {
-                                $additionalParams .= '&'.$key.'=0';
+                                $additionalParams .= '&amp;'.$key.'=0';
                             }
                         } else {
-                            $additionalParams .= '&'.$key.'='.$value;
+                            $additionalParams .= '&amp;'.$key.'='.$value;
                         }
                     }
                 }
@@ -800,12 +800,12 @@ class Video extends Model\Document\Editable implements IdRewriterInterface
                     if (in_array($key, $validDailymotionParams)) {
                         if (is_bool($value)) {
                             if ($value) {
-                                $additionalParams .= '&'.$key.'=1';
+                                $additionalParams .= '&amp;'.$key.'=1';
                             } else {
-                                $additionalParams .= '&'.$key.'=0';
+                                $additionalParams .= '&amp;'.$key.'=0';
                             }
                         } else {
-                            $additionalParams .= '&'.$key.'='.$value;
+                            $additionalParams .= '&amp;'.$key.'='.$value;
                         }
                     }
                 }
