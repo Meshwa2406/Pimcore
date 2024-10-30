@@ -740,7 +740,7 @@ class Video extends Model\Document\Editable implements IdRewriterInterface
             }
 
             $code .= '<div id="pimcore_video_' . $this->getName() . '" class="pimcore_editable_video '. ($config['class'] ?? '') .'">
-                <iframe src="https://player.vimeo.com/video/' . $vimeoId . '?dnt=1&title=0&amp;byline=0&amp;portrait=0' . $additionalParams . '" width="' . $width . '" height="' . $height . '" title="Vimeo video" allow="fullscreen" data-type="pimcore_video_editable"></iframe>
+                <iframe src="https://player.vimeo.com/video/' . $vimeoId . '?dnt=1&amp;title=0&amp;byline=0&amp;portrait=0' . $additionalParams . '" width="' . $width . '" height="' . $height . '" title="Vimeo video" allow="fullscreen" data-type="pimcore_video_editable"></iframe>
             </div>';
 
             return $code;
