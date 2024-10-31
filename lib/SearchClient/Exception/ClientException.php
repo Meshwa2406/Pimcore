@@ -16,7 +16,6 @@ declare(strict_types=1);
 
 namespace Pimcore\SearchClient\Exception;
 
-use Pimcore\Bundle\GenericDataIndexBundle\Model\OpenSearch\Debug\SearchInformation;
 use RuntimeException;
 use Throwable;
 
