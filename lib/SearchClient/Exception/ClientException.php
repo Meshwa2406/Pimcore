@@ -17,7 +17,6 @@ declare(strict_types=1);
 namespace Pimcore\SearchClient\Exception;
 
 use RuntimeException;
-use Throwable;
 
 final class ClientException extends RuntimeException
 {
