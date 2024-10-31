@@ -21,11 +21,4 @@ use Throwable;
 
 final class ClientException extends RuntimeException
 {
-    public function __construct(
-        mixed $message = '',
-        mixed $code = 0,
-        Throwable $previous = null
-    ) {
-        parent::__construct($message, $code, $previous);
-    }
 }
