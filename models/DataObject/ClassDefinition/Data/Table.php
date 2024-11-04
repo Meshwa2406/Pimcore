@@ -74,6 +74,11 @@ class Table extends Data implements ResourcePersistenceAwareInterface, QueryReso
      */
     public array $columnConfig = [];
 
+    /**
+     * @return $this
+     *
+     * @internal
+     */
     public function setWidth(int|string|null $width): static
     {
         return $this->setWidthTrait($width ?: 320);
