@@ -41,7 +41,10 @@ final class ManuelBlockNode extends Node
                 'body' => $body,
                 'end' => $end,
             ],
-            [], $lineno, $tag);
+            [],
+            $lineno,
+            $tag
+        );
     }
 
     public function compile(Compiler $compiler): void

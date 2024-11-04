@@ -58,7 +58,8 @@ final class ManualBlockParser extends AbstractTokenParser
             $startNode,
             $bodyNode,
             $endNode,
-            $lineno, $this->getTag()
+            $lineno,
+            $this->getTag()
         );
     }
 

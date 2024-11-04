@@ -58,6 +58,8 @@ trait HasBlockOptionsTrait
                     $options->setClass($node->getAttribute('value'));
 
                     break;
+                default:
+                    break;
             }
         }
 
