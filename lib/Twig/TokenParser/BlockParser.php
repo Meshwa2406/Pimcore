@@ -15,7 +15,6 @@ declare(strict_types=1);
  *  @license    http://www.pimcore.org/license     GPLv3 and PCL
  */
 
-
 namespace Pimcore\Twig\TokenParser;
 
 use Pimcore\Twig\Node\BlockNode;
@@ -41,14 +40,13 @@ final class BlockParser extends AbstractTokenParser
         $options = $this->getBlockOptions($stream, $this->parser);
         $options->setManual(false);
 
-
         $this->parser->getStream()->expect(Token::BLOCK_END_TYPE);
         $body = $this->parser->subparse([$this, 'decidePimcoreBlockEnd'], true);
         $this->parser->getStream()->expect(Token::BLOCK_END_TYPE);
 
-
         return new BlockNode($blockName, $options, $body, $lineno, $this->getTag());
     }
+
     public function decidePimcoreBlockEnd(Token $token): bool
     {
         return $token->test('endpimcoreblock');

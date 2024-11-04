@@ -15,7 +15,6 @@ declare(strict_types=1);
  *  @license    http://www.pimcore.org/license     GPLv3 and PCL
  */
 
-
 namespace Pimcore\Twig\TokenParser;
 
 use Pimcore\Twig\Node\ManuelBlockNode;
@@ -29,7 +28,6 @@ use Twig\TokenParser\AbstractTokenParser;
  */
 final class ManualBlockParser extends AbstractTokenParser
 {
-
     use HasBlockOptionsTrait;
 
     public function parse(Token $token): Node
@@ -42,7 +40,6 @@ final class ManualBlockParser extends AbstractTokenParser
         $options = $this->getBlockOptions($stream, $this->parser);
         $options->setManual(true);
 
-
         $stream->expect(Token::BLOCK_END_TYPE);
 
         $startNode = $this->parser->subparse([$this, 'decideIterateStart'], true);
@@ -54,7 +51,6 @@ final class ManualBlockParser extends AbstractTokenParser
         $endNode = $this->parser->subparse([$this, 'decidePimcoreManualBlockEnd'], true);
 
         $this->parser->getStream()->expect(Token::BLOCK_END_TYPE);
-
 
         return new ManuelBlockNode(
             $blockName,

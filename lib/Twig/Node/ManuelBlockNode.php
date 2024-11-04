@@ -34,13 +34,12 @@ final class ManuelBlockNode extends Node
         Node $end,
         int $lineno,
         string $tag
-    )
-    {
+    ) {
         parent::__construct(
             [
                 'start' => $start,
                 'body' => $body,
-                'end' => $end
+                'end' => $end,
             ],
             [], $lineno, $tag);
     }

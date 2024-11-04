@@ -77,6 +77,7 @@ final class BlockOptions
         if ($this->reload) {
             return 'true';
         }
+
         return 'false';
     }
 
@@ -85,26 +86,27 @@ final class BlockOptions
         if ($this->manual) {
             return 'true';
         }
+
         return 'false';
     }
 
     public function toString(): string
     {
-        $options = "[";
-        $options .= "'manual' => " . $this->getManuelAsString() .",";
+        $options = '[';
+        $options .= "'manual' => " . $this->getManuelAsString() .',';
 
         if ($this->getLimit()) {
-            $options .= "'limit' => " . $this->getLimit() .",";
+            $options .= "'limit' => " . $this->getLimit() .',';
         }
 
-        $options .= "'reload' => " . $this->getReloadAsString() .",";
-        $options .= "'default' => " . $this->getDefault() .",";
+        $options .= "'reload' => " . $this->getReloadAsString() .',';
+        $options .= "'default' => " . $this->getDefault() .',';
 
         if ($this->getClass()) {
-            $options .= "'class' => \"". $this->getClass() . "\",";
+            $options .= "'class' => \"". $this->getClass() . '",';
         }
 
-        $options .= "]";
+        $options .= ']';
 
         return $options;
     }

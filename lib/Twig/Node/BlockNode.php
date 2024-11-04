@@ -15,7 +15,6 @@ declare(strict_types=1);
  *  @license    http://www.pimcore.org/license     GPLv3 and PCL
  */
 
-
 namespace Pimcore\Twig\Node;
 
 use Pimcore\Twig\Options\BlockOptions;
@@ -33,8 +32,7 @@ final class BlockNode extends Node
         Node $body,
         int $lineno,
         string $tag
-    )
-    {
+    ) {
         parent::__construct(['body' => $body], [], $lineno, $tag);
     }
 
