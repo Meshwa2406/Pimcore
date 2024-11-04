@@ -135,7 +135,7 @@ The manual block offers you the possibility to deal with block the way you like,
 If you want to wrap buttons in a div or change the Position.
 
 ```twig
-{% pimcoremanualblock "gridblock1" %}
+{% pimcoremanualblock "gridblock" %}
     <table>
         <tr>
         {% blockiterate %}
