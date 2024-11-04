@@ -139,13 +139,13 @@ If you want to wrap buttons in a div or change the Position.
     <table>
         <tr>
         {% blockiterate %}
-            <td customAttribute="{{ pimcore_input("myInput3").data }}">
+            <td customAttribute="{{ pimcore_input("myInput").data }}">
                 {% do _block.blockStart(false) %}
                 <div style="background-color: #fc0; margin-bottom: 10px; padding: 5px; border: 1px solid black;">
                     {% do _block.blockControls() %}
                 </div>
                 <div style="width:200px; height:200px;border:1px solid black;">
-                    {{ pimcore_input("myInput3") }}
+                    {{ pimcore_input("myInput") }}
                 </div>
                 {% do _block.blockEnd() %}
             </td>
