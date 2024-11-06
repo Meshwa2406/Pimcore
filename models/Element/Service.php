@@ -1381,7 +1381,7 @@ class Service extends Model\AbstractModel
 
         $copier->addTypeFilter(
             new class implements TypeFilter {
-                public function apply($element)
+                public function apply($element): DatePeriod
                 {
                     $options = 0;
                     if (PHP_VERSION_ID >= 80200 && $element->include_end_date) {
