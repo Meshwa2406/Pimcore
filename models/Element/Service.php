@@ -17,11 +17,14 @@ declare(strict_types=1);
 namespace Pimcore\Model\Element;
 
 use __PHP_Incomplete_Class;
+use DatePeriod;
 use DeepCopy\DeepCopy;
 use DeepCopy\Filter\Doctrine\DoctrineCollectionFilter;
 use DeepCopy\Filter\SetNullFilter;
 use DeepCopy\Matcher\PropertyNameMatcher;
 use DeepCopy\Matcher\PropertyTypeMatcher;
+use DeepCopy\TypeFilter\TypeFilter;
+use DeepCopy\TypeMatcher\TypeMatcher;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Query\QueryBuilder as DoctrineQueryBuilder;
 use Exception;
@@ -1375,6 +1378,28 @@ class Service extends Model\AbstractModel
             $copier->addFilter(new SetNullFilter(), new PropertyTypeMatcher('Psr\Container\ContainerInterface'));
             $copier->addFilter(new SetNullFilter(), new PropertyTypeMatcher('Pimcore\Model\DataObject\ClassDefinition'));
         }
+
+        $copier->addTypeFilter(
+            new class implements TypeFilter {
+                public function apply($element)
+                {
+                    $options = 0;
+                    if (PHP_VERSION_ID >= 80200 && $element->include_end_date) {
+                        $options |= DatePeriod::INCLUDE_END_DATE;
+                    }
+                    if (!$element->include_start_date) {
+                        $options |= DatePeriod::EXCLUDE_START_DATE;
+                    }
+
+                    if ($element->getEndDate()) {
+                        return new DatePeriod($element->getStartDate(), $element->getDateInterval(), $element->getEndDate(), $options);
+                    }
+
+                    return new DatePeriod($element->getStartDate(), $element->getDateInterval(), $element->getRecurrences(), $options);
+                }
+            },
+            new TypeMatcher(DatePeriod::class),
+        );
 
         $event = new GenericEvent(null, [
             'copier' => $copier,
