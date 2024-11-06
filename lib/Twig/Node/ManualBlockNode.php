@@ -24,7 +24,7 @@ use Twig\Node\Node;
 /**
  * @internal
  */
-final class ManuelBlockNode extends Node
+final class ManualBlockNode extends Node
 {
     public function __construct(
         private readonly string $blockName,

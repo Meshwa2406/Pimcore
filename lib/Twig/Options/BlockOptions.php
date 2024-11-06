@@ -81,7 +81,7 @@ final class BlockOptions
         return 'false';
     }
 
-    private function getManuelAsString(): string
+    private function getManualAsString(): string
     {
         if ($this->manual) {
             return 'true';
@@ -93,7 +93,7 @@ final class BlockOptions
     public function toString(): string
     {
         $options = '[';
-        $options .= "'manual' => " . $this->getManuelAsString() .',';
+        $options .= "'manual' => " . $this->getManualAsString() .',';
 
         if ($this->getLimit()) {
             $options .= "'limit' => " . $this->getLimit() .',';

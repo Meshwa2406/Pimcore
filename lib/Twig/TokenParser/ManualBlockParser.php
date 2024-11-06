@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace Pimcore\Twig\TokenParser;
 
-use Pimcore\Twig\Node\ManuelBlockNode;
+use Pimcore\Twig\Node\ManualBlockNode;
 use Pimcore\Twig\Options\HasBlockOptionsTrait;
 use Twig\Node\Node;
 use Twig\Token;
@@ -52,7 +52,7 @@ final class ManualBlockParser extends AbstractTokenParser
 
         $this->parser->getStream()->expect(Token::BLOCK_END_TYPE);
 
-        return new ManuelBlockNode(
+        return new ManualBlockNode(
             $blockName,
             $options,
             $startNode,
