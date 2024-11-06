@@ -1383,12 +1383,9 @@ class Service extends Model\AbstractModel
             new class implements TypeFilter {
                 public function apply($element): DatePeriod
                 {
-                    $options = 0;
-                    if (PHP_VERSION_ID >= 80200 && $element->include_end_date) {
-                        $options |= DatePeriod::INCLUDE_END_DATE;
-                    }
-                    if (!$element->include_start_date) {
-                        $options |= DatePeriod::EXCLUDE_START_DATE;
+                    $options = $element->include_start_date ? 0 : DatePeriod::EXCLUDE_START_DATE;
+                    if (PHP_VERSION_ID >= 80200) {
+                        $options |= $element->include_end_date ? 2 /* DatePeriod::INCLUDE_END_DATE */ : 0;
                     }
 
                     if ($element->getEndDate()) {
