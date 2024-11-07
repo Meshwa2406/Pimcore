@@ -17,15 +17,11 @@ declare(strict_types=1);
 namespace Pimcore\Model\Element;
 
 use __PHP_Incomplete_Class;
-use Carbon\CarbonPeriod;
-use DatePeriod;
 use DeepCopy\DeepCopy;
 use DeepCopy\Filter\Doctrine\DoctrineCollectionFilter;
 use DeepCopy\Filter\SetNullFilter;
 use DeepCopy\Matcher\PropertyNameMatcher;
 use DeepCopy\Matcher\PropertyTypeMatcher;
-use DeepCopy\TypeFilter\TypeFilter;
-use DeepCopy\TypeMatcher\TypeMatcher;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Query\QueryBuilder as DoctrineQueryBuilder;
 use Exception;
@@ -709,10 +705,6 @@ class Service extends Model\AbstractModel
             return $data;
         }
         if (is_object($data)) {
-            if ($data instanceof CarbonPeriod) {
-                return $data;
-            }
-
             if ($data instanceof UnitEnum) {
                 return $data;
             }
@@ -1383,33 +1375,6 @@ class Service extends Model\AbstractModel
             $copier->addFilter(new SetNullFilter(), new PropertyTypeMatcher('Psr\Container\ContainerInterface'));
             $copier->addFilter(new SetNullFilter(), new PropertyTypeMatcher('Pimcore\Model\DataObject\ClassDefinition'));
         }
-
-        $copier->addTypeFilter(
-            new class implements TypeFilter {
-                public function apply($element): DatePeriod
-                {
-                    $options = $element->include_start_date ? 0 : DatePeriod::EXCLUDE_START_DATE;
-                    if (PHP_VERSION_ID >= 80200) {
-                        $options |= $element->include_end_date ? 2 /* DatePeriod::INCLUDE_END_DATE */ : 0;
-                    }
-
-                    $class = get_class($element);
-
-                    if ($element->getEndDate()) {
-                        return new $class($element->getStartDate(), $element->getDateInterval(), $element->getEndDate(), $options);
-                    }
-
-                    if (PHP_VERSION_ID >= 70217) {
-                        $recurrences = $element->getRecurrences();
-                    } else {
-                        $recurrences = $element->recurrences - $element->include_start_date;
-                    }
-
-                    return new $class($element->getStartDate(), $element->getDateInterval(), $recurrences, $options);
-                }
-            },
-            new TypeMatcher(DatePeriod::class),
-        );
 
         $event = new GenericEvent(null, [
             'copier' => $copier,

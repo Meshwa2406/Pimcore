@@ -123,11 +123,8 @@ abstract class AbstractDataTypeTestCase extends TestCase
         $this->assertEquals($before->getEndDate(), $after->getEndDate());
         $this->assertEquals($before->getRecurrences(), $after->getRecurrences());
         $this->assertEquals($before->getStartDate(), $after->getStartDate());
-        $this->assertEquals($before->getDateInterval(), $after->getDateInterval());
-        $this->assertEquals($before->isEnded(), $after->isEnded());
         $this->assertEquals($before->isEndExcluded(), $after->isEndExcluded());
         $this->assertEquals($before->isStartExcluded(), $after->isStartExcluded());
-        $this->assertEquals(iterator_to_array($before->getIterator()), iterator_to_array($after->getIterator()));
     }
 
     public function testBooleanSelect(): void

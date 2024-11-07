@@ -68,7 +68,7 @@
     "mpratt/embera": "^2.0.14",
     "myclabs/deep-copy": "^1.11",
     "neitanod/forceutf8": "^2.0.4",
-    "nesbot/carbon": "^3.8",
+    "nesbot/carbon": "^2.72",
     "onnov/detect-encoding": "^2.0",
     "pear/net_url2": "^2.2",
     "presta/sitemap-bundle": "^3.3 || ^4.1",
