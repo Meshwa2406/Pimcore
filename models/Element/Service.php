@@ -1132,7 +1132,9 @@ class Service extends Model\AbstractModel
         $theCopy = $deepCopy->copy($element);
         $theCopy->setId(null);
         $theCopy->setParent(null);
-        $theCopy->markFieldDirty('properties');
+        if ($theCopy instanceof AbstractElement) {
+            $theCopy->markFieldDirty('properties');
+        }
 
         return $theCopy;
     }
