@@ -32,6 +32,9 @@ class ServiceTest extends TestCase
 
         // copy object in the same folder
         $clonedObject = Service::cloneMe($object);
+        $this->assertNull($clonedObject->getId());
+        $this->assertNull($clonedObject->getParent());
+        $this->assertNull($clonedObject->getParentId());
         $target = DataObject::getById(1);
         $clonedObject->setKey(Service::getSafeCopyName($clonedObject->getKey(), $target));
         $clonedObject->setParentId($target->getId());
