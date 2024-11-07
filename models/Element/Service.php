@@ -17,6 +17,7 @@ declare(strict_types=1);
 namespace Pimcore\Model\Element;
 
 use __PHP_Incomplete_Class;
+use Carbon\CarbonPeriod;
 use DatePeriod;
 use DeepCopy\DeepCopy;
 use DeepCopy\Filter\Doctrine\DoctrineCollectionFilter;
@@ -708,6 +709,10 @@ class Service extends Model\AbstractModel
             return $data;
         }
         if (is_object($data)) {
+            if ($data instanceof CarbonPeriod) {
+                return $data;
+            }
+
             if ($data instanceof UnitEnum) {
                 return $data;
             }
@@ -1388,11 +1393,19 @@ class Service extends Model\AbstractModel
                         $options |= $element->include_end_date ? 2 /* DatePeriod::INCLUDE_END_DATE */ : 0;
                     }
 
+                    $class = get_class($element);
+
                     if ($element->getEndDate()) {
-                        return new DatePeriod($element->getStartDate(), $element->getDateInterval(), $element->getEndDate(), $options);
+                        return new $class($element->getStartDate(), $element->getDateInterval(), $element->getEndDate(), $options);
                     }
 
-                    return new DatePeriod($element->getStartDate(), $element->getDateInterval(), $element->getRecurrences(), $options);
+                    if (PHP_VERSION_ID >= 70217) {
+                        $recurrences = $element->getRecurrences();
+                    } else {
+                        $recurrences = $element->recurrences - $element->include_start_date;
+                    }
+
+                    return new $class($element->getStartDate(), $element->getDateInterval(), $recurrences, $options);
                 }
             },
             new TypeMatcher(DatePeriod::class),

@@ -16,6 +16,7 @@ declare(strict_types=1);
 
 namespace Pimcore\Tests\Support\Test\DataType;
 
+use Carbon\CarbonPeriod;
 use Exception;
 use InvalidArgumentException;
 use Pimcore;
@@ -102,6 +103,33 @@ abstract class AbstractDataTypeTestCase extends TestCase
     abstract protected function createTestObject(array $fields = [], ?array &$params = []): Unittest;
 
     abstract public function refreshObject(): void;
+
+    public function testMarshallDateRange(): void
+    {
+        $this->createTestObject([
+            [
+                'method' => 'fillDateRange',
+                'field' => 'dateRange',
+            ],
+        ]);
+
+        $before = $this->testObject->getDateRange();
+        $this->assertNotNull($before);
+
+        $version = $this->testObject->getLatestVersion(includingPublished: true);
+        $data = $version->loadData(true);
+
+        $after = $data->getDateRange();
+        $this->assertNotSame($before, $after);
+        $this->assertEquals($before->getEndDate(), $after->getEndDate());
+        $this->assertEquals($before->getRecurrences(), $after->getRecurrences());
+        $this->assertEquals($before->getStartDate(), $after->getStartDate());
+        $this->assertEquals($before->getDateInterval(), $after->getDateInterval());
+        $this->assertEquals($before->isEnded(), $after->isEnded());
+        $this->assertEquals($before->isEndExcluded(), $after->isEndExcluded());
+        $this->assertEquals($before->isStartExcluded(), $after->isStartExcluded());
+        $this->assertEquals(iterator_to_array($before->getIterator()), iterator_to_array($after->getIterator()));
+    }
 
     public function testBooleanSelect(): void
     {
