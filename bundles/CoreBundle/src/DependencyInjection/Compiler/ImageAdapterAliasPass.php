@@ -29,7 +29,7 @@ final class ImageAdapterAliasPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void
     {
-        if($container->hasDefinition(Image::class)) {
+        if ($container->hasDefinition(Image::class)) {
             $container->getDefinition(Image::class)->setPublic(true)->setShared(false);
         } elseif ($container->hasAlias(Image::class)) {
             $container->getAlias(Image::class)->setPublic(true);
