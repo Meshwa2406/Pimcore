@@ -37,6 +37,7 @@ class ServiceTest extends TestCase
 
         $clonedObject = DataObject::getById($clonedObject->getId(), ['force' => true]);
 
+        $this->assertEquals($object->getKey() . '_copy', $clonedObject->getKey());
         $this->assertEquals('valueA', $clonedObject->getProperty('propertyA'));
     }
 }
