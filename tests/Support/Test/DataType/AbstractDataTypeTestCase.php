@@ -16,7 +16,6 @@ declare(strict_types=1);
 
 namespace Pimcore\Tests\Support\Test\DataType;
 
-use Carbon\CarbonPeriod;
 use Exception;
 use InvalidArgumentException;
 use Pimcore;
