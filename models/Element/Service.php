@@ -1128,6 +1128,7 @@ class Service extends Model\AbstractModel
             DataObject\Service::loadAllObjectFields($element);
         }
 
+        /** @var ElementInterface $theCopy */
         $theCopy = $deepCopy->copy($element);
         $theCopy->setId(null);
         $theCopy->setParent(null);
