@@ -38,12 +38,27 @@ interface SearchClientInterface
     /**
      * @throws ClientException
      */
+    public function exists(array $params): bool;
+
+    /**
+     * @throws ClientException
+     */
     public function count(array $params): array;
 
     /**
      * @throws ClientException
      */
+    public function index(array $params): array;
+
+    /**
+     * @throws ClientException
+     */
     public function bulk(array $params): array;
+
+    /**
+     * @throws ClientException
+     */
+    public function delete(array $params): array;
 
     /**
      * @throws ClientException
@@ -59,6 +74,21 @@ interface SearchClientInterface
      * @throws ClientException
      */
     public function createIndex(array $params): array;
+
+    /**
+     * @throws ClientException
+     */
+    public function openIndex(array $params): array;
+
+    /**
+     * @throws ClientException
+     */
+    public function closeIndex(array $params): array;
+
+    /**
+     * @throws ClientException
+     */
+    public function getAllIndices(array $params): array;
 
     /**
      * @throws ClientException
@@ -119,6 +149,11 @@ interface SearchClientInterface
      * @throws ClientException
      */
     public function getIndexMapping(array $params): array;
+
+    /**
+     * @throws ClientException
+     */
+    public function getIndexSettings(array $params): array;
 
     /**
      * @throws ClientException
