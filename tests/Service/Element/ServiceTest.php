@@ -25,16 +25,19 @@ class ServiceTest extends TestCase
 {
     public function testCloneMe(): void
     {
+        // create object with property
         $object = TestHelper::createEmptyObject('', false);
         $object->setProperty('propertyA', 'input', 'valueA');
         $object->save();
 
+        // copy object in the same folder
         $clonedObject = Service::cloneMe($object);
         $target = DataObject::getById(1);
         $clonedObject->setKey(Service::getSafeCopyName($clonedObject->getKey(), $target));
         $clonedObject->setParentId($target->getId());
         $clonedObject->save();
 
+        // reload the new object from the db
         $clonedObject = DataObject::getById($clonedObject->getId(), ['force' => true]);
 
         $this->assertEquals($object->getKey() . '_copy', $clonedObject->getKey());
