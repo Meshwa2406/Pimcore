@@ -26,12 +26,9 @@ final class Image
      *
      * @throws Exception
      */
-    public static function getInstance(): Adapter\GD|Adapter\Imagick|null
+    public static function getInstance(): Adapter\GD|Adapter\Imagick
     {
-        //@TODO should be configured on the container
-        $adapter = self::create();
-
-        return $adapter;
+        return Pimcore::getContainer()->get(self::class);
     }
 
     /**
@@ -40,18 +37,8 @@ final class Image
      *
      * @internal
      */
-    public static function create(): Adapter\GD|Adapter\Imagick|null
+    public static function create(): Adapter\GD|Adapter\Imagick
     {
-        try {
-            if (extension_loaded('imagick')) {
-                return Pimcore::getContainer()->get(Adapter\Imagick::class);
-            } else {
-                return Pimcore::getContainer()->get(Adapter\GD::class);
-            }
-        } catch (Exception $e) {
-            Logger::crit('Unable to load image extensions: ' . $e->getMessage());
-
-            throw $e;
-        }
+        return Pimcore::getContainer()->get(self::class);
     }
 }
