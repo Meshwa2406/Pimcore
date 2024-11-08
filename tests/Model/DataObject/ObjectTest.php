@@ -67,7 +67,8 @@ class ObjectTest extends ModelTestCase
         $this->expectExceptionMessage('ParentID is mandatory and can´t be null. If you want to add the element as a child to the tree´s root node, consider setting ParentID to 1.');
         $savedObject = TestHelper::createEmptyObject('', false);
         $this->assertNull($savedObject->getId());
-        $this->assertNull($savedObject->getParentId());
+
+        $savedObject->setParentId(null);
         $savedObject->save();
     }
 
