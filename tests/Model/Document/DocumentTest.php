@@ -85,9 +85,8 @@ class DocumentTest extends ModelTestCase
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('ParentID is mandatory and can´t be null. If you want to add the element as a child to the tree´s root node, consider setting ParentID to 1.');
         $savedObject = TestHelper::createEmptyDocumentPage('', false);
-        $this->assertTrue($savedObject->getId() == 0);
-
-        $savedObject->setParentId(0);
+        $this->assertNull($savedObject->getId());
+        $this->assertNull($savedObject->getParentId());
         $savedObject->save();
     }
 

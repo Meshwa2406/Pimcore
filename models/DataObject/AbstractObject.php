@@ -673,7 +673,7 @@ abstract class AbstractObject extends Model\Element\AbstractElement
             }
         } elseif ($this->getId() == 1) {
             // some data in root node should always be the same
-            $this->setParentId(0);
+            $this->setParentId(null);
             $this->setPath('/');
             $this->setKey('');
             $this->setType(DataObject::OBJECT_TYPE_FOLDER);
