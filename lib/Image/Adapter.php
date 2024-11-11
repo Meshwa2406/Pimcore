@@ -370,12 +370,14 @@ abstract class Adapter implements AdapterInterface
 
     /**
      * @deprecated Provided by AdapterInterface::load() instead
+     *
      * @return $this|false
      */
     abstract public function load(string $imagePath, array $options = []): static|false;
 
     /**
      * @deprecated Provided by AdapterInterface::save() instead
+     *
      * @return $this
      */
     abstract public function save(string $path, string $format = null, int $quality = null): static;
@@ -384,12 +386,12 @@ abstract class Adapter implements AdapterInterface
 
     /**
      * @deprecated Provided by AdapterInterface::getContentOptimizedFormat() instead
-     * @return string
      */
     abstract public function getContentOptimizedFormat(): string;
 
     /**
      * @deprecated Provided by AdapterInterface::supportsFormat() instead
+     *
      * @internal
      */
     abstract public function supportsFormat(string $format, bool $force = false): bool;
