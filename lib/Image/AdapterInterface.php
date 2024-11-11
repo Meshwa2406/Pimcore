@@ -50,6 +50,9 @@ interface AdapterInterface
 
     public function roundCorners(int $width, int $height): static;
 
+    /**
+     * @param string $origin Origin of the X and Y coordinates (top-left, top-right, bottom-left, bottom-right or center)
+     */
     public function addOverlay(mixed $image, int $x = 0, int $y = 0, int $alpha = 100, string $composite = 'COMPOSITE_DEFAULT', string $origin = 'top-left'): static;
 
     public function addOverlayFit(string $image, string $composite = 'COMPOSITE_DEFAULT'): static;
