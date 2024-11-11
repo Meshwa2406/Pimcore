@@ -313,6 +313,7 @@ abstract class Adapter implements AdapterInterface
 
     /**
      * @deprecated Provided by AdapterInterface::supportsFormat() instead
+     *
      * @internal
      */
     abstract public function supportsFormat(string $format, bool $force = false): bool;
