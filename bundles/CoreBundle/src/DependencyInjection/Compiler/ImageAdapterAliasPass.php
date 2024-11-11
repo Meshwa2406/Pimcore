@@ -16,8 +16,8 @@ declare(strict_types=1);
 
 namespace Pimcore\Bundle\CoreBundle\DependencyInjection\Compiler;
 
-use Pimcore\Image\Adapter\Imagick;
 use Pimcore\Image\Adapter\GD;
+use Pimcore\Image\Adapter\Imagick;
 use Pimcore\Image\AdapterInterface;
 use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
