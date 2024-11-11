@@ -16,7 +16,8 @@ declare(strict_types=1);
 
 namespace Pimcore\Bundle\CoreBundle\DependencyInjection\Compiler;
 
-use Pimcore\Image;
+use Pimcore\Image\Adapter\Imagick;
+use Pimcore\Image\Adapter\GD;
 use Pimcore\Image\AdapterInterface;
 use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -36,11 +37,11 @@ final class ImageAdapterAliasPass implements CompilerPassInterface
             $container->getAlias(AdapterInterface::class)->setPublic(true);
         } else {
             if (extension_loaded('imagick')) {
-                $alias = new Alias(Image\Adapter\Imagick::class, true);
-                $container->setAlias(Image::class, $alias);
+                $alias = new Alias(Imagick::class, true);
+                $container->setAlias(AdapterInterface::class, $alias);
             } else {
-                $alias = new Alias(Image\Adapter\GD::class, true);
-                $container->setAlias(Image::class, $alias);
+                $alias = new Alias(GD::class, true);
+                $container->setAlias(AdapterInterface::class, $alias);
             }
         }
     }
