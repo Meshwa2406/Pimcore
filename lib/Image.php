@@ -17,8 +17,7 @@ declare(strict_types=1);
 namespace Pimcore;
 
 use Exception;
-use Pimcore;
-use Pimcore\Image\Adapter;
+use Pimcore\Image\AdapterInterface;
 
 final class Image
 {
@@ -26,9 +25,9 @@ final class Image
      *
      * @throws Exception
      */
-    public static function getInstance(): Adapter\GD|Adapter\Imagick
+    public static function getInstance(): AdapterInterface
     {
-        return Pimcore::getContainer()->get(self::class);
+        return Pimcore::getContainer()->get(AdapterInterface::class);
     }
 
     /**
@@ -37,8 +36,8 @@ final class Image
      *
      * @internal
      */
-    public static function create(): Adapter\GD|Adapter\Imagick
+    public static function create(): AdapterInterface
     {
-        return Pimcore::getContainer()->get(self::class);
+        return Pimcore::getContainer()->get(AdapterInterface::class);
     }
 }

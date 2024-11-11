@@ -17,6 +17,7 @@ declare(strict_types=1);
 namespace Pimcore\Bundle\CoreBundle\DependencyInjection\Compiler;
 
 use Pimcore\Image;
+use Pimcore\Image\AdapterInterface;
 use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -29,10 +30,10 @@ final class ImageAdapterAliasPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void
     {
-        if ($container->hasDefinition(Image::class)) {
-            $container->getDefinition(Image::class)->setPublic(true)->setShared(false);
-        } elseif ($container->hasAlias(Image::class)) {
-            $container->getAlias(Image::class)->setPublic(true);
+        if ($container->hasDefinition(AdapterInterface::class)) {
+            $container->getDefinition(AdapterInterface::class)->setPublic(true)->setShared(false);
+        } elseif ($container->hasAlias(AdapterInterface::class)) {
+            $container->getAlias(AdapterInterface::class)->setPublic(true);
         } else {
             if (extension_loaded('imagick')) {
                 $alias = new Alias(Image\Adapter\Imagick::class, true);
