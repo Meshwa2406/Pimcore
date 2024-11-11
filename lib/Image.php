@@ -27,7 +27,7 @@ final class Image
      */
     public static function getInstance(): AdapterInterface
     {
-        return Pimcore::getContainer()->get(AdapterInterface::class);
+        return \Pimcore::getContainer()->get(AdapterInterface::class);
     }
 
     /**
@@ -38,6 +38,6 @@ final class Image
      */
     public static function create(): AdapterInterface
     {
-        return Pimcore::getContainer()->get(AdapterInterface::class);
+        return \Pimcore::getContainer()->get(AdapterInterface::class);
     }
 }
