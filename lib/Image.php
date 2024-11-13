@@ -30,15 +30,4 @@ final class Image
     {
         return Pimcore::getContainer()->get(AdapterInterface::class);
     }
-
-    /**
-     *
-     * @throws Exception
-     *
-     * @internal
-     */
-    public static function create(): AdapterInterface
-    {
-        return Pimcore::getContainer()->get(AdapterInterface::class);
-    }
 }
