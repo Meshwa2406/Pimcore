@@ -239,7 +239,7 @@ class EncryptedField extends Data implements ResourcePersistenceAwareInterface, 
     }
 
     /**
-     * display the quantity value field data in the grid
+     * display the encrypted field value field data in the grid
      */
     public function getDataForGrid(mixed $data, Model\DataObject\Concrete $object = null, array $params = []): mixed
     {
