@@ -439,7 +439,7 @@ class Document extends Element\AbstractElement
             }
         } elseif ($this->getId() == 1) {
             // some data in root node should always be the same
-            $this->setParentId(null);
+            $this->setParentId(0);
             $this->setPath('/');
             $this->setKey('');
             $this->setType('page');

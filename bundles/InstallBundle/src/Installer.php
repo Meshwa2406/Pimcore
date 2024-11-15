@@ -798,7 +798,7 @@ class Installer
     {
         $db->insert('assets', Helper::quoteDataIdentifiers($db, [
             'id' => 1,
-            'parentId' => null,
+            'parentId' => 0,
             'type' => 'folder',
             'filename' => '',
             'path' => '/',
@@ -809,7 +809,7 @@ class Installer
         ]));
         $db->insert('documents', Helper::quoteDataIdentifiers($db, [
             'id' => 1,
-            'parentId' => null,
+            'parentId' => 0,
             'type' => 'page',
             'key' => '',
             'path' => '/',
@@ -829,7 +829,7 @@ class Installer
         ]));
         $db->insert('objects', Helper::quoteDataIdentifiers($db, [
             'id' => 1,
-            'parentId' => null,
+            'parentId' => 0,
             'type' => 'folder',
             'key' => '',
             'path' => '/',

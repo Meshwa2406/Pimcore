@@ -657,7 +657,7 @@ class Asset extends Element\AbstractElement
             $this->setPath(str_replace('//', '/', $parent->getCurrentFullPath() . '/'));
         } elseif ($this->getId() == 1) {
             // some data in root node should always be the same
-            $this->setParentId(null);
+            $this->setParentId(0);
             $this->setPath('/');
             $this->setFilename('');
             $this->setType('folder');
