@@ -119,6 +119,14 @@ class TestDataHelper extends AbstractTestDataHelper
         }
     }
 
+    public function assertGetDataForGrid(Concrete $object, string $field, mixed $value, mixed $expected): void
+    {
+        $fd = $this->getFieldDefinition($object, $field);
+        if (method_exists($fd, 'getDataForGrid')) {
+            $this->assertEquals($fd->getDataForGrid($value, $object), $expected);
+        }
+    }
+
     public function assertCountryMultiSelect(Concrete $object, string $field, int $seed = 1): void
     {
         $getter = 'get' . ucfirst($field);
@@ -172,6 +180,7 @@ class TestDataHelper extends AbstractTestDataHelper
         $expected = $language . 'content' . $seed;
 
         $this->assertIsEqual($object, $field, $expected, $value);
+        $this->assertGetDataForGrid($object, $field, $value, $expected);
         $this->assertEquals($expected, $value);
     }
 
