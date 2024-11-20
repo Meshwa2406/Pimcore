@@ -147,6 +147,7 @@ class Dao extends Model\Dao\AbstractDao
             }
 
             $inheritedValues = DataObject::doGetInheritedValues();
+
             try {
                 DataObject::setGetInheritedValues(false);
 
