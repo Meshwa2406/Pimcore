@@ -63,7 +63,7 @@ class OptionsProvider implements SelectOptionsProviderInterface
      */
     public function getDefaultValue(array $context, Data $fieldDefinition): ?string 
     {
-        if (method_exists($fieldDefinition, 'getDefaultValue') {
+        if (method_exists($fieldDefinition, 'getDefaultValue')) {
             return $fieldDefinition->getDefaultValue();
         }
 
