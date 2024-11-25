@@ -320,6 +320,8 @@ final class Thumbnail implements ThumbnailInterface
                 $titleText = $image->getMetadata($customTitle);
             } elseif ($image->getMetadata('title')) {
                 $titleText = $image->getMetadata('title');
+            } else {
+                //don't change the one that is already set
             }
         }
 
@@ -346,6 +348,8 @@ final class Thumbnail implements ThumbnailInterface
                 $copyrightText = $image->getMetadata($customCopyright);
             } elseif ($image->getMetadata('copyright')) {
                 $copyrightText = $image->getMetadata('copyright');
+            } else {
+                // no value found, skip it
             }
 
             if (isset($copyrightText)) {
