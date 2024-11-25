@@ -4,7 +4,7 @@
 - `context` property of `ResolveUploadTargetEvent` is deprecated. Use `setArgument()` method instead.
 - `pimcore_block` Twig extension is deprecated. Use `pimcoreblock` or `pimcoremanualblock` instead.
 ### [Assets]
-- Introduced `pimcore.assets.metadata.alt_prefix` configuration to let auto alt functionality to prioritize metadata with a prefix.
+- Introduced `pimcore.assets.metadata.alt`, `pimcore.assets.metadata.copyright`, `pimcore.assets.metadata.title` configuration to allow defining which metadata should be used when rending the image tag.
 
 ## Pimcore 11.5.0
 ### General
