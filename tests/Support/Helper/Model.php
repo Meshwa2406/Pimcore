@@ -1024,6 +1024,7 @@ class Model extends AbstractDefinitionHelper
         if (!$unit) {
             $unit = new DataObject\QuantityValue\Unit();
             $unit->setAbbreviation($abbr);
+            $unit->setId($abbr);
             $unit->save();
         }
     }
