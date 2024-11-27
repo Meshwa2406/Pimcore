@@ -57,9 +57,9 @@ class BlockStateListener implements EventSubscriberInterface, LoggerAwareInterfa
         }
 
         // Can be removed? Seems some legacy leftover
-//        if ($request->get('disableBlockClearing')) {
-//            return;
-//        }
+        //        if ($request->get('disableBlockClearing')) {
+        //            return;
+        //        }
 
         // main request already has a state on the stack
         if ($event->isMainRequest()) {
@@ -79,9 +79,9 @@ class BlockStateListener implements EventSubscriberInterface, LoggerAwareInterfa
             return;
         }
 
-//        if ($request->get('disableBlockClearing')) {
-//            return;
-//        }
+        //        if ($request->get('disableBlockClearing')) {
+        //            return;
+        //        }
 
         if ($this->blockStateStack->count() > 1) {
             // restore parent block data by removing sub-request block state
