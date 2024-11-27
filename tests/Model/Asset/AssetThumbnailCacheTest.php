@@ -111,7 +111,7 @@ class AssetThumbnailCacheTest extends TestCase
 
         //check via controller
         //check if thumbnail is regenerated and cache is filled
-        $subRequest = new Request([
+        $subRequest = new Request([], [], [
             'assetId' => $asset->getId(),
             'thumbnailName' => $thumbnailName,
             'filename' => $thumbConfig->getFilename(),
