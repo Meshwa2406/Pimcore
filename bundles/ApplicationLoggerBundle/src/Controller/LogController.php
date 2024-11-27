@@ -60,8 +60,8 @@ class LogController extends UserAwareController implements KernelControllerEvent
         $qb
             ->select('*')
             ->from(ApplicationLoggerDb::TABLE_NAME)
-            ->setFirstResult($request->get('start', 0))
-            ->setMaxResults($request->get('limit', 50));
+            ->setFirstResult($request->request->getInt('start', 0))
+            ->setMaxResults($request->request->getInt('limit', 50));
 
         $qb->orderBy('id', 'DESC');
 
@@ -76,35 +76,35 @@ class LogController extends UserAwareController implements KernelControllerEvent
             }
         }
 
-        $priority = $request->get('priority');
+        $priority = $request->request->getString('priority');
         if (!empty($priority)) {
             $qb->andWhere($qb->expr()->eq('priority', ':priority'));
             $qb->setParameter('priority', $priority);
         }
 
-        if ($fromDate = $this->parseDateObject($request->get('fromDate'), $request->get('fromTime'))) {
+        if ($fromDate = $this->parseDateObject($request->request->getString('fromDate'), $request->request->getString('fromTime'))) {
             $qb->andWhere('timestamp > :fromDate');
             $qb->setParameter('fromDate', $fromDate, Types::DATETIME_MUTABLE);
         }
 
-        if ($toDate = $this->parseDateObject($request->get('toDate'), $request->get('toTime'))) {
+        if ($toDate = $this->parseDateObject($request->request->getString('toDate'), $request->request->getString('toTime'))) {
             $qb->andWhere('timestamp <= :toDate');
             $qb->setParameter('toDate', $toDate, Types::DATETIME_MUTABLE);
         }
 
-        if (!empty($component = $request->get('component'))) {
+        if (!empty($component = $request->request->getString('component'))) {
             $qb->andWhere('component = ' . $qb->createNamedParameter($component));
         }
 
-        if (!empty($relatedObject = $request->get('relatedobject'))) {
+        if (!empty($relatedObject = $request->request->getString('relatedobject'))) {
             $qb->andWhere('relatedobject = ' . $qb->createNamedParameter($relatedObject));
         }
 
-        if (!empty($message = $request->get('message'))) {
+        if (!empty($message = $request->request->getString('message'))) {
             $qb->andWhere('message LIKE ' . $qb->createNamedParameter('%' . $message . '%'));
         }
 
-        if (!empty($pid = $request->get('pid'))) {
+        if (!empty($pid = $request->request->getInt('pid'))) {
             $qb->andWhere('pid LIKE ' . $qb->createNamedParameter('%' . $pid . '%'));
         }
 
@@ -210,7 +210,7 @@ class LogController extends UserAwareController implements KernelControllerEvent
     {
         $this->checkPermission('application_logging');
 
-        $filePath = $request->get('filePath');
+        $filePath = $request->query->getString('filePath');
         $storage = Storage::get('application_log');
 
         if ($storage->fileExists($filePath)) {
