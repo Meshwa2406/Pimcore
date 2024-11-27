@@ -346,7 +346,7 @@ class CustomReportController extends UserAwareController
         $configuration = $config->getDataSourceConfig();
 
         $adapter = Tool\Config::getAdapter($configuration, $config);
-        $result = $adapter->getAvailableOptions($filters ?? [], $field ?? '', $drillDownFilters);
+        $result = $adapter->getAvailableOptions($filters ?? [], $field, $drillDownFilters);
 
         return $this->jsonResponse([
             'success' => true,
