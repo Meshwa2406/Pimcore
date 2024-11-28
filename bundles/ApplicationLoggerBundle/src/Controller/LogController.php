@@ -54,20 +54,36 @@ class LogController extends UserAwareController implements KernelControllerEvent
      */
     public function showAction(Request $request, Connection $db): JsonResponse
     {
+        $requestSource = $request->request;
+
+        //TODO: Remove the GET method support in Pimcore 12
+        if ($request->isMethod('GET')){
+            trigger_deprecation(
+                'pimcore/pimcore',
+                '11.5.0',
+                sprintf('Calling route "%s" (%s) via "GET" method is deprecated and will not be supported anymore in 12.
+                Please use "POST" method instead.',
+        'pimcore_admin_bundle_applicationlogger_log_show',
+                __METHOD__
+                )
+            );
+            $requestSource = $request->query;
+        }
+
         $this->checkPermission('application_logging');
 
         $qb = $db->createQueryBuilder();
         $qb
             ->select('*')
             ->from(ApplicationLoggerDb::TABLE_NAME)
-            ->setFirstResult($request->request->getInt('start', 0))
-            ->setMaxResults($request->request->getInt('limit', 50));
+            ->setFirstResult($requestSource->getInt('start', 0))
+            ->setMaxResults($requestSource->getInt('limit', 50));
 
         $qb->orderBy('id', 'DESC');
 
         if (class_exists(\Pimcore\Bundle\AdminBundle\Helper\QueryParams::class)) {
             $sortingSettings = \Pimcore\Bundle\AdminBundle\Helper\QueryParams::extractSortingSettings(array_merge(
-                $request->request->all(),
+                $requestSource->all(),
                 $request->query->all()
             ));
 
@@ -76,35 +92,35 @@ class LogController extends UserAwareController implements KernelControllerEvent
             }
         }
 
-        $priority = $request->request->getString('priority');
+        $priority = $requestSource->getString('priority');
         if (!empty($priority)) {
             $qb->andWhere($qb->expr()->eq('priority', ':priority'));
             $qb->setParameter('priority', $priority);
         }
 
-        if ($fromDate = $this->parseDateObject($request->request->getString('fromDate'), $request->request->getString('fromTime'))) {
+        if ($fromDate = $this->parseDateObject($requestSource->getString('fromDate'), $requestSource->getString('fromTime'))) {
             $qb->andWhere('timestamp > :fromDate');
             $qb->setParameter('fromDate', $fromDate, Types::DATETIME_MUTABLE);
         }
 
-        if ($toDate = $this->parseDateObject($request->request->getString('toDate'), $request->request->getString('toTime'))) {
+        if ($toDate = $this->parseDateObject($requestSource->getString('toDate'), $requestSource->getString('toTime'))) {
             $qb->andWhere('timestamp <= :toDate');
             $qb->setParameter('toDate', $toDate, Types::DATETIME_MUTABLE);
         }
 
-        if (!empty($component = $request->request->getString('component'))) {
+        if (!empty($component = $requestSource->getString('component'))) {
             $qb->andWhere('component = ' . $qb->createNamedParameter($component));
         }
 
-        if (!empty($relatedObject = $request->request->getString('relatedobject'))) {
+        if (!empty($relatedObject = $requestSource->getString('relatedobject'))) {
             $qb->andWhere('relatedobject = ' . $qb->createNamedParameter($relatedObject));
         }
 
-        if (!empty($message = $request->request->getString('message'))) {
+        if (!empty($message = $requestSource->getString('message'))) {
             $qb->andWhere('message LIKE ' . $qb->createNamedParameter('%' . $message . '%'));
         }
 
-        if (!empty($pid = $request->request->getInt('pid'))) {
+        if (!empty($pid = $requestSource->getInt('pid'))) {
             $qb->andWhere('pid LIKE ' . $qb->createNamedParameter('%' . $pid . '%'));
         }
 
