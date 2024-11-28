@@ -83,7 +83,7 @@ class LogController extends UserAwareController implements KernelControllerEvent
 
         if (class_exists(\Pimcore\Bundle\AdminBundle\Helper\QueryParams::class)) {
             $sortingSettings = \Pimcore\Bundle\AdminBundle\Helper\QueryParams::extractSortingSettings(array_merge(
-                $requestSource->all(),
+                $request->request->all(),
                 $request->query->all()
             ));
 
