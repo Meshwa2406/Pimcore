@@ -5,6 +5,8 @@
 - `pimcore_block` Twig extension is deprecated. Use `pimcoreblock` or `pimcoremanualblock` instead.
 ### [Assets]
 - Introduced `pimcore.assets.metadata.alt`, `pimcore.assets.metadata.copyright`, `pimcore.assets.metadata.title` configuration to allow defining which metadata should be used when rending the image tag.
+### [DataObjects]
+- Passing an non-existing or invalid unit when setting QuantityValue related object types will throw an exception.
 
 ## Pimcore 11.5.0
 ### General
