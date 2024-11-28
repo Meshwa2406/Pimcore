@@ -57,14 +57,14 @@ class LogController extends UserAwareController implements KernelControllerEvent
         $requestSource = $request->request;
 
         //TODO: Remove the GET method support in Pimcore 12
-        if ($request->isMethod('GET')){
+        if ($request->isMethod('GET')) {
             trigger_deprecation(
                 'pimcore/pimcore',
                 '11.5.0',
                 sprintf('Calling route "%s" (%s) via "GET" method is deprecated and will not be supported anymore in 12.
                 Please use "POST" method instead.',
-        'pimcore_admin_bundle_applicationlogger_log_show',
-                __METHOD__
+                    'pimcore_admin_bundle_applicationlogger_log_show',
+                    __METHOD__
                 )
             );
             $requestSource = $request->query;
