@@ -7,6 +7,10 @@
 - Introduced `pimcore.assets.metadata.alt`, `pimcore.assets.metadata.copyright`, `pimcore.assets.metadata.title` configuration to allow defining which metadata should be used when rending the image tag.
 ### [Controllers]
 - Replaced all `$request->get()` with their explicit input source.
+### [DataObjects]
+- Passing an non-existing or invalid unit when programmatically setting QuantityValue related object types will throw an exception.
+### [Dependencies]
+- Added support to `doctrine/orm` `v3` and `symfony/webpack-encore-bundle` `v2`.
 
 ## Pimcore 11.5.0
 ### General
