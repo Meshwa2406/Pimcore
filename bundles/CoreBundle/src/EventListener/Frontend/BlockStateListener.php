@@ -57,7 +57,7 @@ class BlockStateListener implements EventSubscriberInterface, LoggerAwareInterfa
         }
 
         if ($request->query->get('disableBlockClearing') || $request->request->get('disableBlockClearing')) {
-           return;
+            return;
         }
 
         // main request already has a state on the stack
@@ -79,7 +79,7 @@ class BlockStateListener implements EventSubscriberInterface, LoggerAwareInterfa
         }
 
         if ($request->query->get('disableBlockClearing') || $request->request->get('disableBlockClearing')) {
-           return;
+            return;
         }
 
         if ($this->blockStateStack->count() > 1) {
