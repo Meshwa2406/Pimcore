@@ -275,4 +275,4 @@ pimcore.bundle.tinymce.editor = Class.create({
 })
 
 new pimcore.bundle.tinymce.editor();
-console.info('TinMCE is deprecated, please use Quill (pimcore/quill-bundle) instead');
+console.info('TinyMCE is deprecated, please use Quill (pimcore/quill-bundle) instead');
