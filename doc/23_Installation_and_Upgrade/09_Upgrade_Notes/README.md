@@ -13,7 +13,7 @@
 ### [Dependencies]
 - Added support to `doctrine/orm` `v3` and `symfony/webpack-encore-bundle` `v2`.
 ### [WYSIWYG-Editor]
-- `TinyMCE` is deprecated. Use Quill (pimcore/quill-bundle) instead.
+- `TinyMCE` is deprecated. Use `Quill` (`pimcore/quill-bundle`) instead.
 
 ## Pimcore 11.5.0
 ### General
