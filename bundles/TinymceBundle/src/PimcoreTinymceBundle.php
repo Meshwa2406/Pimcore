@@ -32,7 +32,7 @@ class PimcoreTinymceBundle extends AbstractPimcoreBundle implements PimcoreBundl
         trigger_deprecation(
             'pimcore/pimcore',
             '11.5.0',
-            'TinMCE is deprecated, please use Quill (pimcore/quill-bundle) instead'
+            'TinyMCE is deprecated, please use Quill (pimcore/quill-bundle) instead'
         );
 
         return [
