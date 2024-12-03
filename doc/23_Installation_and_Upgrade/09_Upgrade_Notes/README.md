@@ -1,5 +1,6 @@
 # Upgrade Notes
 ## Pimcore 11.5.0
+
 ### [Events]
 - `context` property of `ResolveUploadTargetEvent` is deprecated. Use `setArgument()` method instead.
 - `pimcore_block` Twig extension is deprecated. Use `pimcoreblock` or `pimcoremanualblock` instead.
@@ -11,6 +12,8 @@
 - Passing an non-existing or invalid unit when programmatically setting QuantityValue related object types will throw an exception.
 ### [Dependencies]
 - Added support to `doctrine/orm` `v3` and `symfony/webpack-encore-bundle` `v2`.
+### [WYSIWYG-Editor]
+- `TinyMCE` is deprecated. Use Quill (pimcore/quill-bundle) instead.
 
 ## Pimcore 11.5.0
 ### General
