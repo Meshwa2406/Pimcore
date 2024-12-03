@@ -23,8 +23,6 @@ pimcore.bundle.tinymce.editor = Class.create({
     },
 
     initializeWysiwyg: function (e) {
-        console.info('TinMCE is deprecated, please use Quill (pimcore/quill-bundle) instead');
-
         if (e.detail.context === 'object') {
             if (!isNaN(e.detail.config.maxCharacters) && e.detail.config.maxCharacters > 0) {
                 this.maxChars = e.detail.config.maxCharacters;
@@ -277,3 +275,4 @@ pimcore.bundle.tinymce.editor = Class.create({
 })
 
 new pimcore.bundle.tinymce.editor();
+console.info('TinMCE is deprecated, please use Quill (pimcore/quill-bundle) instead');
