@@ -171,7 +171,7 @@ class ElementListener implements EventSubscriberInterface, LoggerAwareInterface
                 ]);
             } else {
                 $this->logger->warning('Failed to load {version} for document {document} from pimcore_version parameter', [
-                    'version' => $$versionId,
+                    'version' => $versionId,
                     'document' => $document->getFullPath(),
                 ]);
 
