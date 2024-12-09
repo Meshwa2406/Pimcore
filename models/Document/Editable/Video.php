@@ -17,12 +17,12 @@ declare(strict_types=1);
 namespace Pimcore\Model\Document\Editable;
 
 use DateTime;
-use Exception;
 use Pimcore;
 use Pimcore\Bundle\CoreBundle\EventListener\Frontend\FullPageCacheListener;
 use Pimcore\Logger;
 use Pimcore\Model;
 use Pimcore\Model\Asset;
+use Pimcore\Model\Exception\InvalidConfigException;
 use Pimcore\Tool;
 
 /**
@@ -991,19 +991,19 @@ class Video extends Model\Document\Editable implements IdRewriterInterface
     }
 
     /**
-     * @throws Exception
+     * @throws InvalidConfigException
      */
     private function updateAllowedTypesFromConfig(array $config): void
     {
         if (isset($config['allowedTypes'])) {
             if (!is_array($config['allowedTypes'])) {
-                throw new Exception('allowedTypes must be an array');
+                throw new InvalidConfigException('allowedTypes must be an array');
             }
             if (!$config['allowedTypes']) {
-                throw new Exception('allowedTypes must not be empty');
+                throw new InvalidConfigException('allowedTypes must not be empty');
             }
             if (array_diff($config['allowedTypes'], self::ALLOWED_TYPES)) {
-                throw new Exception('allowedTypes must have one of: ' . implode(', ', self::ALLOWED_TYPES));
+                throw new InvalidConfigException('allowedTypes must have one of: ' . implode(', ', self::ALLOWED_TYPES));
             }
             $this->allowedTypes = $config['allowedTypes'];
         } else {
