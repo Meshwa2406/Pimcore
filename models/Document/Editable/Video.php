@@ -997,13 +997,13 @@ class Video extends Model\Document\Editable implements IdRewriterInterface
     {
         if (isset($config['allowedTypes'])) {
             if (!is_array($config['allowedTypes'])) {
-                throw new InvalidConfigException('allowedTypes must be an array');
+                throw new InvalidConfigException('Video config "allowedTypes" must be an array');
             }
             if (!$config['allowedTypes']) {
-                throw new InvalidConfigException('allowedTypes must not be empty');
+                throw new InvalidConfigException('Video config "allowedTypes" must not be empty');
             }
             if (array_diff($config['allowedTypes'], self::ALLOWED_TYPES)) {
-                throw new InvalidConfigException('allowedTypes must have one of: ' . implode(', ', self::ALLOWED_TYPES));
+                throw new InvalidConfigException('Unsupported types in video config "allowedTypes"');
             }
             $this->allowedTypes = $config['allowedTypes'];
         } else {
