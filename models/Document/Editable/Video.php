@@ -989,16 +989,24 @@ class Video extends Model\Document\Editable implements IdRewriterInterface
         return '<div id="pimcore_video_' . $this->getName() . '" class="pimcore_editable_video"><div class="pimcore_editable_video_empty" id="' . $uid . '" style="width: ' . $this->getWidthWithUnit() . '; height: ' . $this->getHeightWithUnit() . ';"></div></div>';
     }
 
+    /**
+     * @throws \Exception
+     */
     private function updateAllowedTypesFromConfig(array $config): void
     {
-        $this->allowedTypes = self::ALLOWED_TYPES;
-
-        if (
-            isset($config['allowedTypes']) === true
-            && empty($config['allowedTypes']) === false
-            && empty(array_diff($config['allowedTypes'], self::ALLOWED_TYPES))
-        ) {
+        if (isset($config['allowedTypes'])) {
+            if (!is_array($config['allowedTypes'])) {
+                throw new \Exception('allowedTypes must be an array');
+            }
+            if (!$config['allowedTypes']) {
+                throw new \Exception('allowedTypes must not be empty');
+            }
+            if (array_diff($config['allowedTypes'], self::ALLOWED_TYPES)) {
+                throw new \Exception('allowedTypes must have one of: ' . implode(', ', self::ALLOWED_TYPES));
+            }
             $this->allowedTypes = $config['allowedTypes'];
+        } else {
+            $this->allowedTypes = self::ALLOWED_TYPES;
         }
     }
 
