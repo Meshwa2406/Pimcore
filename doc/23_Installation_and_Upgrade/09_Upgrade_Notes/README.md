@@ -1,5 +1,10 @@
 # Upgrade Notes
 
+## Pimcore 11.6.0
+### Elements
+#### [Documents]
+- Video Editable: Passing an invalid allowedTypes config will throw an exception.
+
 ## Pimcore 11.5.0
 ### General
 #### [Database]
@@ -20,8 +25,6 @@
 - Introduced `pimcore.assets.metadata.alt`, `pimcore.assets.metadata.copyright`, `pimcore.assets.metadata.title` configuration to allow defining which metadata should be used when rending the image tag.
 #### [DataObjects]
 - Passing an non-existing or invalid unit when programmatically setting QuantityValue related object types will throw an exception.
-#### [Documents]
-- Video Editable: Passing an invalid allowedTypes config will throw an exception.
 
 ## Pimcore 11.4.0
 ### General
