@@ -20,13 +20,13 @@ use DateTime;
 use DateTimeZone;
 use Doctrine\DBAL\Connection;
 use Exception;
+use Imagick;
 use IntlDateFormatter;
 use Pimcore\Helper\GotenbergHelper;
 use Pimcore\Image;
 use Pimcore\Tool\Requirements\Check;
 use ReflectionClass;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Process\Process;
 
 /**
  * @internal
@@ -619,7 +619,7 @@ final class Requirements
         ]);
 
         if (class_exists('Imagick')) {
-            $lcmsInstalled = str_contains(\Imagick::getConfigureOptions()["DELEGATES"], "lcms");
+            $lcmsInstalled = str_contains(Imagick::getConfigureOptions()['DELEGATES'], 'lcms');
 
             $checks[] = new Check([
                 'name' => 'ImageMagick LCMS delegate',
