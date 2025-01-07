@@ -91,7 +91,7 @@ class Gotenberg extends Ghostscript
         return $this;
     }
 
-    public function getPdf(?Asset\Document $asset = null, bool $onlyFirstPage = false)
+    public function getPdf(?Asset\Document $asset = null)
     {
         if (!$asset && $this->asset) {
             $asset = $this->asset;
@@ -99,7 +99,7 @@ class Gotenberg extends Ghostscript
 
         try {
             // if the document is already an PDF, delegate the call directly to parent::getPdf() (Ghostscript)
-            if (parent::isFileTypeSupported($asset->getFilename()) && !$onlyFirstPage) {
+            if (parent::isFileTypeSupported($asset->getFilename())) {
                 return parent::getPdf($asset);
             }
         } catch (Exception $e) {
@@ -123,14 +123,6 @@ class Gotenberg extends Ghostscript
                     ->convert(
                         Stream::path($localAssetTmpPath)
                     );
-
-                if ($onlyFirstPage) {
-                    $request = GotenbergAPI::libreOffice(Config::getSystemConfiguration('gotenberg')['base_url'])
-                        ->nativePageRanges('1-1')
-                        ->convert(
-                            Stream::path($localAssetTmpPath)
-                        );
-                }
 
                 $response = GotenbergAPI::send($request);
                 $fileContent = $response->getBody()->getContents();

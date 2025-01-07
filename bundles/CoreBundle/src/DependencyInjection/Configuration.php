@@ -605,7 +605,7 @@ final class Configuration implements ConfigurationInterface
                                 ->info('Scan PDF documents for unsafe JavaScript.')
                             ->end()
                             ->enumNode('open_pdf_in_new_tab')
-                                ->values(['all-pdfs', 'only unsafe', 'none'])
+                                ->values(['all-pdfs', 'only-unsafe', 'none'])
                                 ->defaultValue('all-pdfs')
                             ->end()
                         ->end()
