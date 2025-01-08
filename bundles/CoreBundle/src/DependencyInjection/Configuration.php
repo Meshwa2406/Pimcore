@@ -606,7 +606,7 @@ final class Configuration implements ConfigurationInterface
                             ->end()
                             ->enumNode('open_pdf_in_new_tab')
                                 ->values(['all-pdfs', 'only-unsafe', 'none'])
-                                ->defaultValue('all-pdfs')
+                                ->defaultValue('only-unsafe')
                             ->end()
                         ->end()
                     ->end()
