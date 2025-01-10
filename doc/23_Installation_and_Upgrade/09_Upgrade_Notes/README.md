@@ -1,5 +1,9 @@
 # Upgrade Notes
 
+## Pimcore 12.0.0
+### Custom Reports
+- add function `getColumnsWithMetadata` to `bundles/CustomReportsBundle/src/Tool/Adapter/CustomReportAdapterInterface.php`
+
 ## Pimcore 11.4.0
 ### General
 #### [Logging]
