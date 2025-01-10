@@ -19,14 +19,13 @@ namespace Pimcore\Maintenance\Tasks\DataObject;
 use Doctrine\DBAL\Connection;
 use Pimcore\Model\DataObject\Objectbrick\Definition;
 use Psr\Log\LoggerInterface;
-use function strlen;
 
 /**
  * @internal
  */
 class CleanupBrickTablesTaskHelper implements ConcreteTaskHelperInterface
 {
-    private const PIMCORE_OBJECTBRICK_CLASS_DIRECTORY = PIMCORE_CLASS_DIRECTORY . '/DataObject/Objectbrick/Data';
+    private const PIMCORE_OBJECTBRICK_CLASS_DIRECTORY = PIMCORE_CLASS_DEFINITION_DIRECTORY . '/objectbricks';
 
     public function __construct(
         private LoggerInterface $logger,
@@ -40,7 +39,7 @@ class CleanupBrickTablesTaskHelper implements ConcreteTaskHelperInterface
         $collectionNames =
             $this->helper->getCollectionNames(self::PIMCORE_OBJECTBRICK_CLASS_DIRECTORY);
 
-        if(empty($collectionNames)) {
+        if (empty($collectionNames)) {
             return;
         }
 
@@ -59,7 +58,7 @@ class CleanupBrickTablesTaskHelper implements ConcreteTaskHelperInterface
                 $fieldDescriptor = substr($tableName, strlen($prefix));
                 $idx = strpos($fieldDescriptor, '_');
                 $brickType = substr($fieldDescriptor, 0, $idx);
-                $brickType = $collectionNames[$brickType] ?? $brickType;
+                $brickType = $collectionNames[strtolower($brickType)] ?? $brickType;
 
                 if (!$this->checkIfBrickExists($brickType, $tableName)) {
                     continue;

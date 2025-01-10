@@ -24,10 +24,6 @@ use Pimcore\Http\RequestHelper;
 use Pimcore\Localization\LocaleServiceInterface;
 use Pimcore\Model\Element;
 use Symfony\Component\HttpFoundation\Request;
-use function count;
-use function in_array;
-use function is_array;
-use function is_string;
 
 final class Tool
 {
@@ -66,8 +62,6 @@ final class Tool
      * settings at "Localization & Internationalization (i18n/l10n)".
      * Returns true, if the language is valid or no language is
      * configured at all, false otherwise.
-     *
-     * @static
      */
     public static function isValidLanguage(?string $language): bool
     {
@@ -90,8 +84,6 @@ final class Tool
      * Returns an array of language codes that configured for this system
      * in pimcore's system settings at "Localization & Internationalization (i18n/l10n)".
      * An empty array is returned if no languages are configured.
-     *
-     * @static
      *
      * @return string[]
      */

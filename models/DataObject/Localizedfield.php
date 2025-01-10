@@ -27,15 +27,9 @@ use Pimcore\Model\DataObject\ClassDefinition\Data\PreSetDataInterface;
 use Pimcore\Model\DataObject\Fieldcollection\Data\AbstractData;
 use Pimcore\Model\Element\DirtyIndicatorInterface;
 use Pimcore\Tool;
-use function array_key_exists;
-use function count;
-use function in_array;
-use function is_array;
-use function is_null;
-use function sprintf;
 
 /**
- * @method Localizedfield\Dao getDao()*
+ * @method Localizedfield\Dao getDao()
  * @method bool delete(bool $deleteQuery = true, bool $isUpdate = true)
  * @method void load(DataObject\Fieldcollection\Data\AbstractData|DataObject\Objectbrick\Data\AbstractData|DataObject\Concrete $object, array $params = [])
  * @method void save(array $params = [])

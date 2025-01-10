@@ -28,8 +28,6 @@ use Pimcore\Model\DataObject\Localizedfield;
 use Pimcore\Model\Document;
 use Pimcore\Model\Element;
 use Pimcore\Normalizer\NormalizerInterface;
-use function is_array;
-use function sprintf;
 
 class ManyToOneRelation extends AbstractRelations implements QueryResourcePersistenceAwareInterface, VarExporterInterface, NormalizerInterface, PreGetDataInterface, PreSetDataInterface
 {
@@ -554,12 +552,14 @@ class ManyToOneRelation extends AbstractRelations implements QueryResourcePersis
     public function getFilterConditionExt(mixed $value, string $operator, array $params = []): string
     {
         $name = $params['name'] . '__id';
+        $prefix = $params['brickPrefix'] ?? '';
         if (preg_match('/^(asset|object|document)\|(\d+)/', $value, $matches)) {
             $typeField = $params['name'] . '__type';
             $typeCondition = '`' . $typeField . '` = ' . "'" . $matches[1] . "'";
             $value = $matches[2];
 
-            return '(' . $typeCondition . ' AND ' . $this->getRelationFilterCondition($value, $operator, $name) . ')';
+            return '(' . $prefix . $typeCondition . ' AND ' . $prefix
+                . $this->getRelationFilterCondition($value, $operator, $name) . ')';
         }
 
         return $this->getRelationFilterCondition($value, $operator, $name);

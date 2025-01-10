@@ -26,8 +26,6 @@ use Pimcore\Model\Element\ElementDescriptor;
 use Pimcore\Model\Element\ElementInterface;
 use Pimcore\Model\Element\Service;
 use Pimcore\Model\Exception\NotFoundException;
-use function array_key_exists;
-use function in_array;
 
 final class JobRunExtractor implements JobRunExtractorInterface
 {
@@ -149,7 +147,7 @@ final class JobRunExtractor implements JobRunExtractorInterface
                 $elementDescriptor->getId(),
                 $types
             );
-            if($element !== null) {
+            if ($element !== null) {
                 $elementsToProcess[] = $element;
             }
         }

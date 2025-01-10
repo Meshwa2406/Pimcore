@@ -18,7 +18,6 @@ namespace Pimcore\Maintenance\Tasks\DataObject;
 
 use Doctrine\DBAL\Connection;
 use Psr\Log\LoggerInterface;
-use function strlen;
 
 /**
  * @internal
@@ -26,7 +25,7 @@ use function strlen;
 class CleanupFieldcollectionTablesTaskHelper implements ConcreteTaskHelperInterface
 {
     private const PIMCORE_FIELDCOLLECTION_CLASS_DIRECTORY =
-        PIMCORE_CLASS_DIRECTORY . '/DataObject/Fieldcollection/Data';
+        PIMCORE_CLASS_DEFINITION_DIRECTORY . '/fieldcollections';
 
     public function __construct(
         private LoggerInterface $logger,
@@ -40,7 +39,7 @@ class CleanupFieldcollectionTablesTaskHelper implements ConcreteTaskHelperInterf
         $collectionNames =
             $this->helper->getCollectionNames(self::PIMCORE_FIELDCOLLECTION_CLASS_DIRECTORY);
 
-        if(empty($collectionNames)) {
+        if (empty($collectionNames)) {
             return;
         }
 
@@ -62,7 +61,7 @@ class CleanupFieldcollectionTablesTaskHelper implements ConcreteTaskHelperInterf
                 $fieldDescriptor = substr($tableName, strlen($prefix));
                 $idx = strpos($fieldDescriptor, '_');
                 $fcType = substr($fieldDescriptor, 0, $idx);
-                $fcType = $collectionNames[$fcType] ?? $fcType;
+                $fcType = $collectionNames[strtolower($fcType)] ?? $fcType;
 
                 if (!$this->checkIfFcExists($fcType, $tableName)) {
                     continue;

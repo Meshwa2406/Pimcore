@@ -23,6 +23,7 @@ use InvalidArgumentException;
 use Pimcore;
 use Pimcore\Cache;
 use Pimcore\Cache\RuntimeCache;
+use Pimcore\Db;
 use Pimcore\Event\DataObjectEvents;
 use Pimcore\Event\Model\DataObjectEvent;
 use Pimcore\Logger;
@@ -31,13 +32,6 @@ use Pimcore\Model\DataObject;
 use Pimcore\Model\Element;
 use Pimcore\Model\Element\DuplicateFullPathException;
 use Pimcore\Model\Element\ElementInterface;
-use function array_key_exists;
-use function func_get_args;
-use function in_array;
-use function is_array;
-use function is_string;
-use function sprintf;
-use function strlen;
 
 /**
  * @method AbstractObject\Dao getDao()
@@ -125,6 +119,19 @@ abstract class AbstractObject extends Model\Element\AbstractElement
      */
     protected ?string $childrenSortOrder = null;
 
+    /**
+     * @internal
+     *
+     * @var string|null
+     */
+    protected $classId = null;
+
+    /**
+     * @internal
+     *
+     */
+    protected ?array $__rawRelationData = null;
+
     protected function getBlockedVars(): array
     {
         $blockedVars = ['versions', 'class', 'scheduledTasks', 'omitMandatoryCheck'];
@@ -140,56 +147,31 @@ abstract class AbstractObject extends Model\Element\AbstractElement
         return $blockedVars;
     }
 
-    /**
-     * @static
-     *
-     */
     public static function getHideUnpublished(): bool
     {
         return self::$hideUnpublished;
     }
 
-    /**
-     * @static
-     *
-     */
     public static function setHideUnpublished(bool $hideUnpublished): void
     {
         self::$hideUnpublished = $hideUnpublished;
     }
 
-    /**
-     * @static
-     *
-     */
     public static function doHideUnpublished(): bool
     {
         return self::$hideUnpublished;
     }
 
-    /**
-     * @static
-     *
-     */
     public static function setGetInheritedValues(bool $getInheritedValues): void
     {
         self::$getInheritedValues = $getInheritedValues;
     }
 
-    /**
-     * @static
-     *
-     */
     public static function getGetInheritedValues(): bool
     {
         return self::$getInheritedValues;
     }
 
-    /**
-     * @static
-     *
-     *
-     */
     public static function doGetInheritedValues(Concrete $object = null): bool
     {
         if (self::$getInheritedValues && $object !== null) {
@@ -304,7 +286,6 @@ abstract class AbstractObject extends Model\Element\AbstractElement
     }
 
     /**
-     *
      * @return DataObject\Listing
      *
      * @throws Exception
@@ -379,7 +360,6 @@ abstract class AbstractObject extends Model\Element\AbstractElement
 
     /**
      * Quick test if there are children
-     *
      */
     public function hasChildren(
         array $objectTypes = [
@@ -630,6 +610,9 @@ abstract class AbstractObject extends Model\Element\AbstractElement
             // add to queue that saves dependencies
             $this->addToDependenciesQueue();
 
+            //Reset Relational data to force a reload
+            $this->__rawRelationData = null;
+
             $postEvent = new DataObjectEvent($this, $parameters);
             if ($isUpdate) {
                 if ($differentOldPath) {
@@ -710,8 +693,7 @@ abstract class AbstractObject extends Model\Element\AbstractElement
         $this->validatePathLength();
     }
 
-    /**
-     *
+    /*
      * @throws Exception
      *
      * @internal
@@ -746,7 +728,6 @@ abstract class AbstractObject extends Model\Element\AbstractElement
     }
 
     /**
-     *
      * @internal
      */
     public static function clearDependentCacheByObjectId(int $objectId, array $additionalTags = []): void
@@ -766,7 +747,6 @@ abstract class AbstractObject extends Model\Element\AbstractElement
     }
 
     /**
-     *
      * @internal
      */
     public function saveIndex(int $index): void
@@ -821,8 +801,7 @@ abstract class AbstractObject extends Model\Element\AbstractElement
 
     public function setParentId(?int $parentId): static
     {
-        $parentId = (int) $parentId;
-        if ($parentId != $this->parentId) {
+        if ($parentId !== $this->parentId) {
             $this->markFieldDirty('parentId');
         }
 
@@ -895,7 +874,7 @@ abstract class AbstractObject extends Model\Element\AbstractElement
 
     public function setParent(?ElementInterface $parent): static
     {
-        $newParentId = $parent instanceof self ? $parent->getId() : 0;
+        $newParentId = $parent instanceof self ? $parent->getId() : null;
         $this->setParentId($newParentId);
         /** @var Element\AbstractElement $parent */
         $this->parent = $parent;
@@ -919,8 +898,6 @@ abstract class AbstractObject extends Model\Element\AbstractElement
     }
 
     /**
-     *
-     *
      * @throws Exception
      */
     public function get(string $fieldName, string $language = null): mixed
@@ -933,8 +910,6 @@ abstract class AbstractObject extends Model\Element\AbstractElement
     }
 
     /**
-     *
-     *
      * @throws Exception
      */
     public function set(string $fieldName, mixed $value, string $language = null): mixed
@@ -948,7 +923,6 @@ abstract class AbstractObject extends Model\Element\AbstractElement
 
     /**
      * @internal
-     *
      */
     public static function isDirtyDetectionDisabled(): bool
     {
@@ -957,7 +931,6 @@ abstract class AbstractObject extends Model\Element\AbstractElement
 
     /**
      * @internal
-     *
      */
     public static function setDisableDirtyDetection(bool $disableDirtyDetection): void
     {
@@ -982,8 +955,6 @@ abstract class AbstractObject extends Model\Element\AbstractElement
 
     /**
      * @internal
-     *
-     *
      */
     protected function getListingCacheKey(array $args = []): string
     {
@@ -1000,7 +971,6 @@ abstract class AbstractObject extends Model\Element\AbstractElement
     }
 
     /**
-     *
      * @return AbstractObject
      */
     public function setChildrenSortOrder(?string $reverseSort): Element\ElementInterface
@@ -1016,6 +986,35 @@ abstract class AbstractObject extends Model\Element\AbstractElement
     }
 
     /**
+     * @return $this
+     */
+    public function setClassId(string $classId): static
+    {
+        $this->classId = $classId;
+
+        return $this;
+    }
+
+    public function getClassId(): ?string
+    {
+        return $this->classId;
+    }
+
+    /**
+     * @internal
+     *
+     */
+    public function __getRawRelationData(): array
+    {
+        if ($this->__rawRelationData === null) {
+            $db = Db::get();
+            $this->__rawRelationData = $db->fetchAllAssociative('SELECT * FROM object_relations_' . $this->getClassId() . ' WHERE src_id = ?', [$this->getId()]);
+        }
+
+        return $this->__rawRelationData;
+    }
+
+    /**
      * load lazy loaded fields before cloning
      */
     public function __clone(): void
@@ -1028,7 +1027,6 @@ abstract class AbstractObject extends Model\Element\AbstractElement
     }
 
     /**
-     *
      * @return mixed
      *
      * @throws Exception
@@ -1078,8 +1076,6 @@ abstract class AbstractObject extends Model\Element\AbstractElement
     }
 
     /**
-     *
-     *
      * @throws Exception
      */
     protected static function makeList(array $listConfig, ?array $objectTypes): Listing

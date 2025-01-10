@@ -25,12 +25,6 @@ use Pimcore\Image\Adapter;
 use Pimcore\Logger;
 use Pimcore\Model\Asset;
 use Symfony\Component\Filesystem\Filesystem;
-use function constant;
-use function defined;
-use function in_array;
-use function is_null;
-use function is_string;
-use function sprintf;
 
 class Imagick extends Adapter
 {
@@ -1030,11 +1024,9 @@ class Imagick extends Adapter
     {
         try {
             // we can't use \Imagick::queryFormats() here, because this doesn't consider configured delegates
-            $tmpFile = PIMCORE_SYSTEM_TEMP_DIRECTORY . '/imagick-format-support-detection-' . uniqid() . '.' . $format;
             $image = new \Imagick();
             $image->newImage(1, 1, new ImagickPixel('red'));
-            $image->writeImage($format . ':' . $tmpFile);
-            unlink($tmpFile);
+            $image->writeImageFile(tmpfile(), $format);
 
             return true;
         } catch (Exception $e) {

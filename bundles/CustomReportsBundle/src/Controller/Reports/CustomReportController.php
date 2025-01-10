@@ -82,9 +82,10 @@ class CustomReportController extends UserAwareController
 
         $success = false;
 
-        $this->isValidConfigName($request->get('name'));
+        $reportName = $request->request->getString('name');
+        $this->isValidConfigName($reportName);
 
-        $report = Tool\Config::getByName($request->get('name'));
+        $report = Tool\Config::getByName($reportName);
 
         if (!$report) {
             $report = new Tool\Config();
@@ -92,7 +93,7 @@ class CustomReportController extends UserAwareController
                 throw new ConfigWriteException();
             }
 
-            $report->setName($request->get('name'));
+            $report->setName($reportName);
             $report->save();
 
             $success = true;
@@ -110,7 +111,7 @@ class CustomReportController extends UserAwareController
     {
         $this->checkPermission('reports_config');
 
-        $report = Tool\Config::getByName($request->get('name'));
+        $report = Tool\Config::getByName($request->request->getString('name'));
         if (!$report) {
             throw $this->createNotFoundException();
         }
@@ -132,14 +133,14 @@ class CustomReportController extends UserAwareController
     {
         $this->checkPermission('reports_config');
 
-        $newName = $request->get('newName');
+        $newName = $request->request->getString('newName');
         $this->isValidConfigName($newName);
         $report = Tool\Config::getByName($newName);
         if ($report) {
             throw new Exception('report already exists');
         }
 
-        $report = Tool\Config::getByName($request->get('name'));
+        $report = Tool\Config::getByName($request->request->getString('name'));
         if (!$report) {
             throw $this->createNotFoundException();
         }
@@ -170,7 +171,7 @@ class CustomReportController extends UserAwareController
     {
         $this->checkPermissionsHasOneOf(['reports_config', 'reports']);
 
-        $report = Tool\Config::getByName($request->get('name'));
+        $report = Tool\Config::getByName($request->query->getString('name'));
         if (!$report) {
             throw $this->createNotFoundException();
         }
@@ -188,8 +189,9 @@ class CustomReportController extends UserAwareController
     public function updateAction(Request $request): JsonResponse
     {
         $this->checkPermission('reports_config');
-        $this->isValidConfigName($request->get('name'));
-        $report = Tool\Config::getByName($request->get('name'));
+        $reportName = $request->request->getString('name');
+        $this->isValidConfigName($reportName);
+        $report = Tool\Config::getByName($reportName);
         if (!$report) {
             throw $this->createNotFoundException();
         }
@@ -197,7 +199,7 @@ class CustomReportController extends UserAwareController
             throw new ConfigWriteException();
         }
 
-        $data = $this->decodeJson($request->get('configuration'));
+        $data = $this->decodeJson($request->request->getString('configuration'));
 
         if (!is_array($data['yAxis'])) {
             $data['yAxis'] = strlen($data['yAxis'] ?? '') ? [$data['yAxis']] : [];
@@ -224,13 +226,13 @@ class CustomReportController extends UserAwareController
     {
         $this->checkPermission('reports_config');
 
-        $report = Tool\Config::getByName($request->get('name'));
+        $report = Tool\Config::getByName($request->request->getString('name'));
         if (!$report) {
             throw $this->createNotFoundException();
         }
         $columnConfiguration = $report->getColumnConfiguration();
 
-        $configuration = json_decode($request->get('configuration'));
+        $configuration = json_decode($request->request->getString('configuration'));
         $configuration = $configuration[0] ?? null;
 
         $success = false;
@@ -282,7 +284,7 @@ class CustomReportController extends UserAwareController
         $items = $list->getDao()->loadForGivenUser($this->getPimcoreUser());
 
         foreach ($items as $report) {
-            if($report->getDataSourceConfig() !== null) {
+            if ($report->getDataSourceConfig() !== null) {
                 $reports[] = [
                     'name' => htmlspecialchars($report->getName()),
                     'niceName' => htmlspecialchars($report->getNiceName()),
@@ -312,9 +314,9 @@ class CustomReportController extends UserAwareController
         if (!class_exists(\Pimcore\Bundle\AdminBundle\Helper\QueryParams::class)) {
             throw new AdminClassicBundleNotFoundException('This action requires package "pimcore/admin-ui-classic-bundle" to be installed.');
         }
-        $offset = (int) $request->get('start', 0);
-        $limit = (int) $request->get('limit', 40);
-        $config = Tool\Config::getByName($request->get('name'));
+        $offset = $request->request->getInt('start', 0);
+        $limit = $request->request->getInt('limit', 40);
+        $config = Tool\Config::getByName($request->request->getString('name'));
         if (!$config) {
             throw $this->createNotFoundException();
         }
@@ -339,18 +341,18 @@ class CustomReportController extends UserAwareController
     {
         $this->checkPermission('reports');
 
-        $field = $request->get('field');
-        $filters = ($request->get('filter') ? json_decode($request->get('filter'), true) : null);
-        $drillDownFilters = $request->get('drillDownFilters', null);
+        $field = $request->request->getString('field');
+        $filters = ($request->request->getString('filter') ? json_decode($request->request->getString('filter'), true) : null);
+        $drillDownFilters = $request->request->all('drillDownFilters');
 
-        $config = Tool\Config::getByName($request->get('name'));
+        $config = Tool\Config::getByName($request->request->getString('name'));
         if (!$config) {
             throw $this->createNotFoundException();
         }
         $configuration = $config->getDataSourceConfig();
 
         $adapter = Tool\Config::getAdapter($configuration, $config);
-        $result = $adapter->getAvailableOptions($filters ?? [], $field ?? '', $drillDownFilters ?? []);
+        $result = $adapter->getAvailableOptions($filters ?? [], $field, $drillDownFilters);
 
         return $this->jsonResponse([
             'success' => true,
@@ -366,7 +368,7 @@ class CustomReportController extends UserAwareController
     public function chartAction(Request $request): JsonResponse
     {
         $this->checkPermission('reports');
-        $config = Tool\Config::getByName($request->get('name'));
+        $config = Tool\Config::getByName($request->request->getString('name'));
         if (!$config) {
             throw $this->createNotFoundException();
         }
@@ -403,16 +405,16 @@ class CustomReportController extends UserAwareController
 
         set_time_limit(300);
 
-        $sort = $request->get('sort');
-        $dir = $request->get('dir');
-        $filters = $request->get('filter') ? json_decode(urldecode($request->get('filter')), true) : null;
-        $drillDownFilters = $request->get('drillDownFilters', null);
+        $sort = $request->query->getString('sort');
+        $dir = $request->query->getString('dir');
+        $filters = $request->query->has('filter') ? json_decode(urldecode($request->query->getString('filter')), true) : null;
+        $drillDownFilters = $request->query->getString('drillDownFilters');
         if ($drillDownFilters) {
             $drillDownFilters = json_decode($drillDownFilters, true);
         }
         $includeHeaders = $request->query->getBoolean('headers');
 
-        $config = Tool\Config::getByName($request->get('name'));
+        $config = Tool\Config::getByName($request->query->getString('name'));
         if (!$config) {
             throw $this->createNotFoundException();
         }
@@ -429,13 +431,12 @@ class CustomReportController extends UserAwareController
 
         $adapter = Tool\Config::getAdapter($configuration, $config);
 
-        $offset = $request->get('offset', 0);
+        $offset = $request->query->getInt('offset');
         $limit = 5000;
-        $tempData = [];
         $result = $adapter->getData($filters, $sort, $dir, $offset * $limit, $limit, $fields, $drillDownFilters);
         ++$offset;
 
-        if (!($exportFile = $request->get('exportFile'))) {
+        if (!($exportFile = $request->query->getString('exportFile'))) {
             $exportFile = PIMCORE_SYSTEM_TEMP_DIRECTORY . '/report-export-' . uniqid() . '.csv';
             @unlink($exportFile);
         } else {
@@ -474,7 +475,7 @@ class CustomReportController extends UserAwareController
     public function downloadCsvAction(Request $request): BinaryFileResponse
     {
         $this->checkPermission('reports');
-        if ($exportFile = $request->get('exportFile')) {
+        if ($exportFile = $request->query->getString('exportFile')) {
             $exportFile = $this->getTemporaryFileFromFileName($exportFile);
             $response = new BinaryFileResponse($exportFile);
             $response->headers->set('Content-Type', 'text/csv; charset=UTF-8');
@@ -492,7 +493,7 @@ class CustomReportController extends UserAwareController
      */
     public function isValidConfigName(string $configName): void
     {
-        if(!preg_match('/^[a-zA-Z0-9_\-]+$/', $configName)) {
+        if (!preg_match('/^[a-zA-Z0-9_\-]+$/', $configName)) {
             throw new Exception('The customer report name is invalid');
         }
     }
@@ -503,15 +504,15 @@ class CustomReportController extends UserAwareController
         $sortingSettings = null;
         $sort = null;
         $dir = null;
-        if(class_exists('\Pimcore\Bundle\AdminBundle\Helper\QueryParams')) {
+        if (class_exists('\Pimcore\Bundle\AdminBundle\Helper\QueryParams')) {
             $sortingSettings = \Pimcore\Bundle\AdminBundle\Helper\QueryParams::extractSortingSettings(array_merge($request->request->all(), $request->query->all()));
         }
         if (is_array($sortingSettings) && $sortingSettings['orderKey']) {
             $sort = $sortingSettings['orderKey'];
             $dir = $sortingSettings['order'];
         }
-        $filters = ($request->get('filter') ? json_decode($request->get('filter'), true) : null);
-        $drillDownFilters = $request->get('drillDownFilters', null);
+        $filters = ($request->request->has('filter') ? json_decode($request->request->getString('filter'), true) : null);
+        $drillDownFilters = $request->request->all('drillDownFilters');
         if ($sort === null && $dir === null && property_exists($configuration, 'orderby') && $configuration->orderby !== '' && $configuration->orderbydir !== '') {
             $sort = $configuration->orderby;
             $dir = $configuration->orderbydir;

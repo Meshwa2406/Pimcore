@@ -28,7 +28,6 @@ use Presta\SitemapBundle\Service\UrlContainerInterface;
 use Presta\SitemapBundle\Sitemap\Url\Url;
 use Presta\SitemapBundle\Sitemap\Url\UrlConcrete;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use function sprintf;
 
 class DocumentTreeGenerator extends AbstractElementGenerator
 {
@@ -78,7 +77,7 @@ class DocumentTreeGenerator extends AbstractElementGenerator
         if ($this->options['handleMainDomain'] && (null === $section || $section === 'default')) {
             $rootDocument = Document::getById($this->options['rootId']);
 
-            if($rootDocument instanceof Document) {
+            if ($rootDocument instanceof Document) {
                 $this->populateCollection($urlContainer, $rootDocument, 'default');
             }
         }

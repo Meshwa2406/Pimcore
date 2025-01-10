@@ -21,7 +21,6 @@ use Pimcore\Extension\Bundle\PimcoreBundleAdminClassicInterface;
 use Pimcore\Extension\Bundle\Traits\BundleAdminClassicTrait;
 use Pimcore\Extension\Bundle\Traits\PackageVersionTrait;
 use Pimcore\Helper\EncoreHelper;
-use function dirname;
 
 class PimcoreTinymceBundle extends AbstractPimcoreBundle implements PimcoreBundleAdminClassicInterface
 {
@@ -30,6 +29,12 @@ class PimcoreTinymceBundle extends AbstractPimcoreBundle implements PimcoreBundl
 
     public function getCssPaths(): array
     {
+        trigger_deprecation(
+            'pimcore/pimcore',
+            '11.5.0',
+            'TinyMCE is deprecated, please use Quill (pimcore/quill-bundle) instead'
+        );
+
         return [
             '/bundles/pimcoretinymce/css/editor.css',
         ];
