@@ -956,7 +956,7 @@ pimcore.bundle.customreports.custom.item = Class.create({
         for (let i = 0; i < this.currentElements.length; i++) {
             if (!this.currentElements[i].deleted) {
                 adapterValues = this.currentElements[i].adapter.getValues();
-                for(let field of this.currentElements[i].adapter.fieldsToCheck) {
+                for(let field of this.currentElements[i].adapter.fieldsToCheck ?? []) {
                     if(!adapterValues[field.name] || adapterValues[field.name] === '') {
                         errorFields.push(field.label)
                     }
