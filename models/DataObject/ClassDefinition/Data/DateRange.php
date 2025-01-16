@@ -329,12 +329,10 @@ class DateRange extends Data implements
     /**
      * Returns a CarbonInterface for the given timestamp.
      */
-    private function getDateFromTimestamp(float|int|string $timestamp): Carbon
+    private function getDateFromTimestamp(float|int|string $timestamp): CarbonInterface
     {
         $date = new Carbon();
-        $date->setTimestamp($timestamp);
-
-        return $date;
+        return $date->setTimestamp($timestamp);
     }
 
     /**

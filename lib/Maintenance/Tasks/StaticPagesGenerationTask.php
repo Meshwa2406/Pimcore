@@ -61,7 +61,7 @@ class StaticPagesGenerationTask implements TaskInterface
                         $generate = true;
                         if ($staticLifetime = $page->getStaticGeneratorLifetime()) {
                             $currentTime = \Carbon\Carbon::now();
-                            $currentTime->subMinutes($staticLifetime);
+                            $currentTime = $currentTime->subMinutes($staticLifetime);
 
                             if ($lastModified > $currentTime->getTimestamp()) {
                                 $generate = false;

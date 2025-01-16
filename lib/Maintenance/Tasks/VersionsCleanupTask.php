@@ -44,7 +44,7 @@ class VersionsCleanupTask implements TaskInterface
     private function doAutoSaveVersionCleanup(): void
     {
         $date = \Carbon\Carbon::now();
-        $date->subHours(72);
+        $date = $date->subHours(72);
 
         $list = new Version\Listing();
         $ids = $list->setLoadAutoSave(true)

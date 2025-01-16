@@ -124,7 +124,7 @@ class Date extends Model\Document\Editable implements EditmodeDataInterface
 
     private function setDateFromTimestamp(int $timestamp): void
     {
-        $this->date = new Carbon();
-        $this->date->setTimestamp($timestamp);
+        $date = new Carbon();
+        $this->date = $date->setTimestamp($timestamp);
     }
 }
