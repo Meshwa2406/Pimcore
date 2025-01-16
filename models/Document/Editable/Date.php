@@ -66,11 +66,14 @@ class Date extends Model\Document\Editable implements EditmodeDataInterface
                 trigger_deprecation(
                     'pimcore/pimcore',
                     '11.2',
-                    'Using "outputFormat" config for %s editable is deprecated, use "outputIsoFormat" config instead.',
-                    __CLASS__
+                    'Using "outputFormat" config for %s editable is deprecated, use "outputIsoFormat" config instead. The format "%s" should be converted to ISO format.',
+                    __CLASS__,
+                    $this->config['outputFormat']
                 );
 
-                return $this->date->formatLocalized($this->config['outputFormat']);
+                // Convert legacy format to ISO format and use isoFormat
+                $isoFormat = $this->convertToIsoFormat($this->config['outputFormat']);
+                return $this->date->isoFormat($isoFormat);
             } else {
                 if (isset($this->config['format']) && $this->config['format']) {
                     $format = $this->config['format'];
@@ -83,6 +86,35 @@ class Date extends Model\Document\Editable implements EditmodeDataInterface
         }
 
         return '';
+    }
+
+    /**
+     * Convert legacy format to ISO format
+     * This is a basic conversion that handles common cases
+     */
+    private function convertToIsoFormat(string $format): string
+    {
+        $replacements = [
+            '%A' => 'dddd',    // Full weekday name
+            '%a' => 'ddd',     // Abbreviated weekday name
+            '%B' => 'MMMM',    // Full month name
+            '%b' => 'MMM',     // Abbreviated month name
+            '%d' => 'DD',      // Day of the month, 2 digits
+            '%e' => 'D',       // Day of the month
+            '%F' => 'YYYY-MM-DD', // Full date
+            '%H' => 'HH',      // Hour in 24h format
+            '%I' => 'hh',      // Hour in 12h format
+            '%M' => 'mm',      // Minutes
+            '%m' => 'MM',      // Month as number
+            '%p' => 'A',       // AM/PM
+            '%R' => 'HH:mm',   // Time in 24h format
+            '%S' => 'ss',      // Seconds
+            '%T' => 'HH:mm:ss', // Time with seconds
+            '%Y' => 'YYYY',    // Full year
+            '%y' => 'YY',      // Year, 2 digits
+        ];
+
+        return str_replace(array_keys($replacements), array_values($replacements), $format);
     }
 
     public function getDataForResource(): mixed

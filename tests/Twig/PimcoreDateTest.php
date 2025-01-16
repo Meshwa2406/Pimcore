@@ -39,8 +39,8 @@ class PimcoreDateTest extends TestCase
 
     public function testPimcoreDateOutputFormat(): void
     {
-        $backupLocale = setlocale(LC_TIME, '0');
-        setlocale(LC_TIME, 'en_US.UTF-8');
+        $backupCarbonLocale = Carbon::getLocale();
+        Carbon::setLocale('en_US.UTF-8');
 
         $this->engine->getTwigEnvironment()->setLoader(new ArrayLoader([
             'twig' => <<<TWIG
@@ -57,6 +57,7 @@ class PimcoreDateTest extends TestCase
         ;
         $snippet->setEditable($date);
 
+        // Test that the legacy format is converted and works correctly
         $result = $this->engine->render(
             'twig',
             [
@@ -66,7 +67,7 @@ class PimcoreDateTest extends TestCase
 
         $this->assertEquals('Wednesday, December 11, 2024 10:09', $result);
 
-        setlocale(LC_TIME, $backupLocale);
+        Carbon::setLocale($backupCarbonLocale);
     }
 
     public function testPimcoreDateOutputIsoFormat(): void
