@@ -205,6 +205,10 @@ class CustomReportController extends UserAwareController
             $data['yAxis'] = strlen($data['yAxis'] ?? '') ? [$data['yAxis']] : [];
         }
 
+        $adapter = Tool\Config::getAdapter($report->getDataSourceConfig());
+        $pagination = $adapter->getPagination();
+        $data['pagination'] = $pagination;
+
         foreach ($data as $key => $value) {
             $setter = 'set' . ucfirst($key);
             if (method_exists($report, $setter)) {

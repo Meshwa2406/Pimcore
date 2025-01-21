@@ -36,4 +36,9 @@ abstract class AbstractAdapter implements CustomReportAdapterInterface
     abstract public function getColumns(?stdClass $configuration): array;
 
     abstract public function getAvailableOptions(array $filters, string $field, array $drillDownFilters): array;
+
+    public function getPagination(): bool
+    {
+        return true;
+    }
 }

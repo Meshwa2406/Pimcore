@@ -50,4 +50,9 @@ interface CustomReportAdapterInterface
      *
      */
     public function getAvailableOptions(array $filters, string $field, array $drillDownFilters): array;
+
+    /**
+     * returns if pagination is activated or deactivated
+     */
+    public function getPagination(): bool;
 }
