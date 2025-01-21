@@ -6,14 +6,14 @@ The input widget for table data is a table with variable rows and columns as sho
 ![Table preview](../../../img/Objects_Table_preview.png)
 
 The data is stored in an array, which needs to be flattened for storage in the database. 
-For this purpose columns are separated with a "|" and rows are distinguished with line breaks. 
+For this purpose columns are separated with a tab character ("\t") and rows are distinguished with line breaks. 
 The database field for a table is a TEXT column. 
 For example, the data shown in the screen above would be stored as:
 
 ```
-one|two|three
-four|five|six
-seven|eight|nine
+one    two    three
+four    five    six
+seven    eight    nine
 ```
 
 ![Table settings](../../../img/Objects_Table_settings.png)
