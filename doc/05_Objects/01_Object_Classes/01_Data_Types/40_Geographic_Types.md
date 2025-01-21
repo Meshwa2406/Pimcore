@@ -2,7 +2,7 @@
 
 There are different geographic data types available in pimcore: `Geopoint`, `Geobounds`, `Geopolygon` and `Geopolyline`. 
 The country select box also belongs to the context of geo widgets, but it is rather a select input widget and therefore it is 
-listed with the other select widgets. aa
+listed with the other select widgets.
 
 
 ## Geopoint
