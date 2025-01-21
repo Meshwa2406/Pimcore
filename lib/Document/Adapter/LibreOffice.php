@@ -106,12 +106,7 @@ class LibreOffice extends Ghostscript
             // nothing to do, delegate to libreoffice
         }
 
-        $storagePath = sprintf(
-            '%s/%s/pdf-thumb__%s__libreoffice-document.png',
-            rtrim($asset->getRealPath(), '/'),
-            $asset->getId(),
-            $asset->getId(),
-        );
+        $storagePath = $this->getTemporaryPdfStorageFilePath($asset);
         $storage = Storage::get('asset_cache');
 
         $lock = Pimcore::getContainer()->get(LockFactory::class)->createLock('soffice');

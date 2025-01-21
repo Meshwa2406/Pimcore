@@ -108,12 +108,7 @@ class Gotenberg extends Ghostscript
 
         $storage = Storage::get('asset_cache');
 
-        $storagePath = sprintf(
-            '%s/%s/pdf-thumb__%s__libreoffice-document.png',
-            rtrim($asset->getRealPath(), '/'),
-            $asset->getId(),
-            $asset->getId(),
-        );
+        $storagePath = $this->getTemporaryPdfStorageFilePath($asset);
 
         if (!$storage->fileExists($storagePath)) {
             $localAssetTmpPath = $asset->getLocalFile();
@@ -128,11 +123,6 @@ class Gotenberg extends Ghostscript
                 $fileContent = $response->getBody()->getContents();
                 $storage->write($storagePath, $fileContent);
 
-                $stream = fopen('php://memory', 'r+');
-                fwrite($stream, $fileContent);
-                rewind($stream);
-
-                return $stream;
             } catch (Exception $e) {
                 $message = "Couldn't convert document to PDF: " . $asset->getRealFullPath() . ' with Gotenberg: ';
                 Logger::error($message. $e->getMessage());
@@ -161,25 +151,7 @@ class Gotenberg extends Ghostscript
         }
 
         if ($this->isFileTypeSupported($asset->getFilename())) {
-            $storagePath = sprintf(
-                '%s/%s/pdf-thumb__%s__libreoffice-document.png',
-                rtrim($asset->getRealPath(), '/'),
-                $asset->getId(),
-                $asset->getId(),
-            );
-
-            $storage = Storage::get('asset_cache');
-
-            $temp = tmpfile();
-
-            if (!$storage->fileExists($storagePath)) {
-                stream_copy_to_stream($this->getPdf($asset), $temp);
-            } else {
-                $data = $storage->readStream($storagePath);
-                stream_copy_to_stream($storage->readStream($storagePath), $temp);
-            }
-
-            return parent::convertPdfToText($page, stream_get_meta_data($temp)['uri']);
+            return parent::convertPdfToText($page, self::getLocalFileFromStream($this->getPdf($asset)));
         }
 
         return '';
