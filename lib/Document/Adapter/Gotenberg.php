@@ -151,7 +151,7 @@ class Gotenberg extends Ghostscript
         }
 
         if ($this->isFileTypeSupported($asset->getFilename())) {
-            return parent::convertPdfToText($page, self::getLocalFileFromStream($this->getPdf($asset)));
+            return parent::convertPdfToText($page, static::getLocalFileFromStream($this->getPdf($asset)));
         }
 
         return '';
