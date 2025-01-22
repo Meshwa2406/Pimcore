@@ -30,6 +30,8 @@ use Pimcore\Tool\Storage;
  */
 class Gotenberg extends Ghostscript
 {
+    use GetTextConversionHelperTrait;
+
     public function isAvailable(): bool
     {
         try {
@@ -132,28 +134,5 @@ class Gotenberg extends Ghostscript
         }
 
         return $storage->readStream($storagePath);
-    }
-
-    public function getText(?int $page = null, ?Asset\Document $asset = null, ?string $path = null): mixed
-    {
-        if (!$asset && $this->asset) {
-            $asset = $this->asset;
-        }
-
-        if ($page) {
-            // for per page extraction we have to convert the document to PDF and extract the text via ghostscript
-            return parent::getText($page, $asset, $path);
-        }
-
-        // if asset is pdf extract via ghostscript
-        if (parent::isFileTypeSupported($asset->getFilename())) {
-            return parent::getText(null, $asset, $path);
-        }
-
-        if ($this->isFileTypeSupported($asset->getFilename())) {
-            return parent::convertPdfToText($page, static::getLocalFileFromStream($this->getPdf($asset)));
-        }
-
-        return '';
     }
 }
