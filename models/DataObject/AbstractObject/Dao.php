@@ -25,7 +25,7 @@ use Pimcore\Model\User;
 /**
  * @internal
  *
- * @property AbstractObject $model
+ * @property \Pimcore\Model\DataObject\AbstractObject $model
  */
 class Dao extends Model\Element\Dao
 {
