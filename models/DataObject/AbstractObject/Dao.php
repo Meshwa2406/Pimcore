@@ -313,7 +313,7 @@ class Dao extends Model\Element\Dao
             $sql .= ' AND IF(' . $anyAllowedRowOrChildren . ',1,IF(' . $inheritedPermission . ', ' . $isDisallowedCurrentRow . ' = 0, 0)) = 1';
         }
 
-        $includingUnpublished ??= DataObject::doHideUnpublished();
+        $includingUnpublished ??= !DataObject::doHideUnpublished();
         if (!$includingUnpublished) {
             $sql .= ' AND published = 1';
         }
@@ -353,7 +353,7 @@ class Dao extends Model\Element\Dao
             $params[] = $this->model->getId();
         }
 
-        $includingUnpublished ??= DataObject::doHideUnpublished();
+        $includingUnpublished ??= !DataObject::doHideUnpublished();
         if (!$includingUnpublished) {
             $sql .= ' AND published = 1';
         }
