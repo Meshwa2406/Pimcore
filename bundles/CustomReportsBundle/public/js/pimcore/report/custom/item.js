@@ -55,6 +55,7 @@ pimcore.bundle.customreports.custom.item = Class.create({
                 'disableOrderBy',
                 'disableFilterable',
                 'disableDropdownFilterable',
+                'disableLabel',
                 'filter',
                 'displayType',
                 'filter_drilldown',
@@ -245,7 +246,8 @@ pimcore.bundle.customreports.custom.item = Class.create({
                     dataIndex: 'label',
                     editable: true,
                     width: 150,
-                    editor: new Ext.form.TextField({})
+                    editor: new Ext.form.TextField({}),
+                    renderer: disableRenderer.bind(this, 'disableLabel')
                 },
                 {
                     text: t("action"), width: 160, sortable: true, dataIndex: 'columnAction',
@@ -884,6 +886,7 @@ pimcore.bundle.customreports.custom.item = Class.create({
                         disableOrderBy: columns[i].disableOrderBy,
                         disableFilterable: columns[i].disableFilterable,
                         disableDropdownFilterable: columns[i].disableDropdownFilterable,
+                        disableLabel: columns[i].disableLabel,
                         display: true,
                         export: true,
                         order: !columns[i].disableOrderBy,

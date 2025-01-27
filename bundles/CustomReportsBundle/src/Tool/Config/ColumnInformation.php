@@ -23,7 +23,8 @@ readonly class ColumnInformation implements JsonSerializable
         private string $name,
         private bool $disableOrderBy = false,
         private bool $disableFilterable = false,
-        private bool $disableDropdownFilterable = false
+        private bool $disableDropdownFilterable = false,
+        private bool $disableLabel = false
     ) {
 
     }
@@ -48,6 +49,11 @@ readonly class ColumnInformation implements JsonSerializable
         return $this->disableDropdownFilterable;
     }
 
+    public function isDisableLabel(): bool
+    {
+        return $this->disableLabel;
+    }
+
     public function jsonSerialize(): array
     {
         return [
@@ -55,6 +61,7 @@ readonly class ColumnInformation implements JsonSerializable
             'disableOrderBy' => $this->disableOrderBy,
             'disableFilterable' => $this->disableFilterable,
             'disableDropdownFilterable' => $this->disableDropdownFilterable,
+            'disableLabel' => $this->disableLabel,
         ];
     }
 }

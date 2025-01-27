@@ -91,12 +91,14 @@ class Sql extends AbstractAdapter
                     $column,
                     true,
                     true,
+                    true,
                     true
                 );
             } else {
 
                 $columnsWithMetadata[] = new ColumnInformation(
                     $column,
+                    false,
                     false,
                     false,
                     false
