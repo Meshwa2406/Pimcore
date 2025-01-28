@@ -73,7 +73,7 @@ class AdvancedManyToManyRelation extends ManyToManyRelation implements IdRewrite
     {
         $return = [];
 
-        if (is_array($data) && count($data) > 0) {
+        if (is_array($data)) {
             $counter = 1;
             foreach ($data as $metaObject) {
                 $element = $metaObject->getElement();
@@ -87,15 +87,9 @@ class AdvancedManyToManyRelation extends ManyToManyRelation implements IdRewrite
                 }
                 $counter++;
             }
-
-            return $return;
-        } elseif (is_array($data) && count($data) === 0) {
-            //give empty array if data was not null
-            return [];
-        } else {
-            //return null if data was null - this indicates data was not loaded
-            return null;
         }
+
+        return $return;
     }
 
     protected function loadData(array $data, Localizedfield|AbstractData|\Pimcore\Model\DataObject\Objectbrick\Data\AbstractData|Concrete|null $object = null, array $params = []): mixed
@@ -562,7 +556,7 @@ class AdvancedManyToManyRelation extends ManyToManyRelation implements IdRewrite
                     $sql .= ' AND ' . Db\Helper::quoteInto($db, 'ownername = ?', $context['fieldname']);
                 }
 
-                if (!DataObject::isDirtyDetectionDisabled() && $object instanceof Element\DirtyIndicatorInterface) {
+                if (!DataObject::isDirtyDetectionDisabled()) {
                     if ($context['containerType']) {
                         if ($object instanceof Localizedfield) {
                             $context['containerType'] = 'localizedfield';
@@ -659,7 +653,7 @@ class AdvancedManyToManyRelation extends ManyToManyRelation implements IdRewrite
                     $deleteCondition['ownername'] = $context['fieldname'];
                 }
 
-                if (!DataObject::isDirtyDetectionDisabled() && $object instanceof Element\DirtyIndicatorInterface) {
+                if (!DataObject::isDirtyDetectionDisabled()) {
                     if (!empty($context['containerType'])) {
                         $deleteCondition['ownertype'] = $context['containerType'];
                     }

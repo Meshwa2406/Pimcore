@@ -88,7 +88,7 @@ class ManyToManyObjectRelation extends AbstractRelations implements QueryResourc
     {
         $return = [];
 
-        if (is_array($data) && count($data) > 0) {
+        if (is_array($data)) {
             $counter = 1;
             foreach ($data as $object) {
                 if ($object instanceof DataObject\Concrete) {
@@ -101,15 +101,9 @@ class ManyToManyObjectRelation extends AbstractRelations implements QueryResourc
                 }
                 $counter++;
             }
-
-            return $return;
-        } elseif (is_array($data) && count($data) === 0) {
-            //give empty array if data was not null
-            return [];
-        } else {
-            //return null if data was null - this indicates data was not loaded
-            return null;
         }
+
+        return $return;
     }
 
     protected function loadData(array $data, Localizedfield|AbstractData|\Pimcore\Model\DataObject\Objectbrick\Data\AbstractData|Concrete|null $object = null, array $params = []): mixed

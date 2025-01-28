@@ -48,7 +48,6 @@ class HtmlToImage
         self::$supportedAdapter = '';
 
         if (GotenbergHelper::isAvailable()) {
-            /** @var GotenbergAPI|object $chrome */
             $chrome = GotenbergAPI::chromium(Config::getSystemConfiguration('gotenberg')['base_url']);
             if (method_exists($chrome, 'screenshot')) {
                 // only v2 of Gotenberg lib is supported
@@ -57,7 +56,7 @@ class HtmlToImage
         }
 
         if (!self::$supportedAdapter && class_exists(BrowserFactory::class)) {
-            $chromiumUri = \Pimcore\Config::getSystemConfiguration('chromium')['uri'];
+            $chromiumUri = Config::getSystemConfiguration('chromium')['uri'];
             if (!empty($chromiumUri)) {
                 try {
                     if ((new Connection($chromiumUri))->connect()) {
@@ -104,13 +103,9 @@ class HtmlToImage
         return false;
     }
 
-    /**
-     * @throws Exception
-     */
     public static function convertGotenberg(string $url, string $outputFile, ?string $sessionName = null, ?string $sessionId = null, string $windowSize = '1280,1024'): bool
     {
         try {
-            /** @var GotenbergAPI|object $request */
             $request = GotenbergAPI::chromium(Config::getSystemConfiguration('gotenberg')['base_url']);
             if (method_exists($request, 'screenshot')) {
                 $sizes = explode(',', $windowSize);
@@ -139,7 +134,7 @@ class HtmlToImage
     {
         trigger_deprecation('pimcore/pimcore', '11.2.0', 'Chromium service is deprecated and will be removed in Pimcore 12. Use Gotenberg instead.');
 
-        $chromiumUri = \Pimcore\Config::getSystemConfiguration('chromium')['uri'];
+        $chromiumUri = Config::getSystemConfiguration('chromium')['uri'];
         if (!empty($chromiumUri)) {
             try {
                 $browser = BrowserFactory::connectToBrowser($chromiumUri);

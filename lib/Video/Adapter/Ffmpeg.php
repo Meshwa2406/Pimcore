@@ -210,19 +210,27 @@ class Ffmpeg extends Adapter
 
     public function saveImage(string $file, ?int $timeOffset = null): void
     {
-        if (!is_numeric($timeOffset)) {
-            $timeOffset = 5;
+        $cli = self::getFfmpegCli();
+        $file = realpath($this->file);
+        if ($cli && $file) {
+            $cmd = [
+                $cli,
+                '-ss',
+                (string) ($timeOffset ?? 5),
+                '-i',
+                $file,
+                '-vcodec',
+                'png',
+                '-vframes',
+                '1',
+                '-vf',
+                'scale=iw*sar:ih',
+                str_replace('/', DIRECTORY_SEPARATOR, $file),
+            ];
+            Console::addLowProcessPriority($cmd);
+            $process = new Process($cmd);
+            $process->run();
         }
-
-        $cmd = [
-            self::getFfmpegCli(),
-            '-ss', $timeOffset, '-i', realpath($this->file),
-            '-vcodec', 'png', '-vframes', 1, '-vf', 'scale=iw*sar:ih',
-            str_replace('/', DIRECTORY_SEPARATOR, $file),
-        ];
-        Console::addLowProcessPriority($cmd);
-        $process = new Process($cmd);
-        $process->run();
     }
 
     /**

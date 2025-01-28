@@ -493,7 +493,7 @@ abstract class Data implements DataObject\ClassDefinition\Data\TypeDeclarationSu
     {
         $key = $this->getName();
 
-        if ($this instanceof DataObject\ClassDefinition\Data\TypeDeclarationSupportInterface && $this->getReturnTypeDeclaration()) {
+        if ($this->getReturnTypeDeclaration()) {
             $typeDeclaration = ': ' . $this->getReturnTypeDeclaration();
         } else {
             $typeDeclaration = '';
@@ -550,7 +550,7 @@ abstract class Data implements DataObject\ClassDefinition\Data\TypeDeclarationSu
 
         $key = $this->getName();
 
-        if ($this instanceof DataObject\ClassDefinition\Data\TypeDeclarationSupportInterface && $this->getParameterTypeDeclaration()) {
+        if ($this->getParameterTypeDeclaration()) {
             $typeDeclaration = $this->getParameterTypeDeclaration() . ' ';
         } else {
             $typeDeclaration = '';
@@ -628,7 +628,7 @@ abstract class Data implements DataObject\ClassDefinition\Data\TypeDeclarationSu
     {
         $key = $this->getName();
 
-        if ($this instanceof DataObject\ClassDefinition\Data\TypeDeclarationSupportInterface && $this->getReturnTypeDeclaration()) {
+        if ($this->getReturnTypeDeclaration()) {
             $typeDeclaration = ': ' . $this->getReturnTypeDeclaration();
         } else {
             $typeDeclaration = '';
@@ -675,7 +675,7 @@ abstract class Data implements DataObject\ClassDefinition\Data\TypeDeclarationSu
     {
         $key = $this->getName();
 
-        if ($this instanceof DataObject\ClassDefinition\Data\TypeDeclarationSupportInterface && $this->getParameterTypeDeclaration()) {
+        if ($this->getParameterTypeDeclaration()) {
             $typeDeclaration = $this->getParameterTypeDeclaration() . ' ';
         } else {
             $typeDeclaration = '';
@@ -756,7 +756,7 @@ abstract class Data implements DataObject\ClassDefinition\Data\TypeDeclarationSu
     {
         $key = $this->getName();
 
-        if ($this instanceof DataObject\ClassDefinition\Data\TypeDeclarationSupportInterface && $this->getReturnTypeDeclaration()) {
+        if ($this->getReturnTypeDeclaration()) {
             $typeDeclaration = ': ' . $this->getReturnTypeDeclaration();
         } else {
             $typeDeclaration = '';
@@ -795,7 +795,7 @@ abstract class Data implements DataObject\ClassDefinition\Data\TypeDeclarationSu
     {
         $key = $this->getName();
 
-        if ($this instanceof DataObject\ClassDefinition\Data\TypeDeclarationSupportInterface && $this->getParameterTypeDeclaration()) {
+        if ($this->getParameterTypeDeclaration()) {
             $typeDeclaration = $this->getParameterTypeDeclaration() . ' ';
         } else {
             $typeDeclaration = '';
@@ -865,7 +865,7 @@ abstract class Data implements DataObject\ClassDefinition\Data\TypeDeclarationSu
     {
         $key = $this->getName();
 
-        if ($this instanceof DataObject\ClassDefinition\Data\TypeDeclarationSupportInterface && $this->getReturnTypeDeclaration()) {
+        if ($this->getReturnTypeDeclaration()) {
             $typeDeclaration = ': ' . $this->getReturnTypeDeclaration();
         } else {
             $typeDeclaration = '';
@@ -913,7 +913,7 @@ abstract class Data implements DataObject\ClassDefinition\Data\TypeDeclarationSu
             $containerGetter = 'getClass';
         }
 
-        if ($this instanceof DataObject\ClassDefinition\Data\TypeDeclarationSupportInterface && $this->getParameterTypeDeclaration()) {
+        if ($this->getParameterTypeDeclaration()) {
             $typeDeclaration = $this->getParameterTypeDeclaration() . ' ';
         } else {
             $typeDeclaration = '';
@@ -1265,8 +1265,6 @@ abstract class Data implements DataObject\ClassDefinition\Data\TypeDeclarationSu
     }
 
     /**
-     * @throws LogicException
-     *
      * TODO Change return type to array in Pimcore 12
      */
     public function appendData(?array $existingData, array $additionalData): ?array
@@ -1275,8 +1273,6 @@ abstract class Data implements DataObject\ClassDefinition\Data\TypeDeclarationSu
     }
 
     /**
-     * @throws LogicException
-     *
      * TODO Change return type to array in Pimcore 12
      */
     public function removeData(?array $existingData, array $removeData): mixed
@@ -1299,9 +1295,7 @@ abstract class Data implements DataObject\ClassDefinition\Data\TypeDeclarationSu
 
     public function markLazyloadedFieldAsLoaded(Localizedfield|AbstractData|Model\DataObject\Objectbrick\Data\AbstractData|Concrete $object): void
     {
-        if ($object instanceof DataObject\LazyLoadedFieldsInterface) {
-            $object->markLazyKeyAsLoaded($this->getName());
-        }
+        $object->markLazyKeyAsLoaded($this->getName());
     }
 
     /**

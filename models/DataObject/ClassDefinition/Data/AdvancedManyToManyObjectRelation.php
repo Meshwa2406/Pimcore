@@ -81,7 +81,7 @@ class AdvancedManyToManyObjectRelation extends ManyToManyObjectRelation implemen
     {
         $return = [];
 
-        if (is_array($data) && count($data) > 0) {
+        if (is_array($data)) {
             $counter = 1;
             foreach ($data as $metaObject) {
                 $object = $metaObject->getObject();
@@ -95,15 +95,9 @@ class AdvancedManyToManyObjectRelation extends ManyToManyObjectRelation implemen
                 }
                 $counter++;
             }
-
-            return $return;
-        } elseif (is_array($data) && count($data) === 0) {
-            //give empty array if data was not null
-            return [];
-        } else {
-            //return null if data was null - this indicates data was not loaded
-            return null;
         }
+
+        return $return;
     }
 
     protected function loadData(array $data, Localizedfield|AbstractData|\Pimcore\Model\DataObject\Objectbrick\Data\AbstractData|Concrete|null $object = null, array $params = []): mixed
@@ -476,7 +470,7 @@ class AdvancedManyToManyObjectRelation extends ManyToManyObjectRelation implemen
                     $sql .= ' AND '.Db\Helper::quoteInto($db, 'ownername = ?', $context['fieldname']);
                 }
 
-                if (!DataObject::isDirtyDetectionDisabled() && $object instanceof Element\DirtyIndicatorInterface) {
+                if (!DataObject::isDirtyDetectionDisabled()) {
                     if ($context['containerType']) {
                         $sql .= ' AND '.Db\Helper::quoteInto($db, 'ownertype = ?', $context['containerType']);
                     }
@@ -560,7 +554,7 @@ class AdvancedManyToManyObjectRelation extends ManyToManyObjectRelation implemen
                     $deleteConditions['ownername'] = $context['fieldname'];
                 }
 
-                if (!DataObject::isDirtyDetectionDisabled() && $object instanceof Element\DirtyIndicatorInterface) {
+                if (!DataObject::isDirtyDetectionDisabled()) {
                     if ($context['containerType']) {
                         $deleteConditions['ownertype'] = $context['containerType'];
                     }
