@@ -301,18 +301,6 @@ parameters:
 			path: lib/Bootstrap.php
 
 		-
-			message: '#^Path in include_once\(\) "/var/www/html/config/pimcore/constants\.php" is not a file or it does not exist\.$#'
-			identifier: includeOnce.fileNotFound
-			count: 1
-			path: lib/Bootstrap.php
-
-		-
-			message: '#^Path in include_once\(\) "/var/www/html/config/pimcore/startup\.php" is not a file or it does not exist\.$#'
-			identifier: includeOnce.fileNotFound
-			count: 1
-			path: lib/Bootstrap.php
-
-		-
 			message: '#^Trait Pimcore\\Console\\Traits\\Timeout is used zero times and is not analysed\.$#'
 			identifier: trait.unused
 			count: 1
