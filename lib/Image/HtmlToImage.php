@@ -48,16 +48,12 @@ class HtmlToImage
         self::$supportedAdapter = '';
 
         if (GotenbergHelper::isAvailable()) {
-            $chrome = GotenbergAPI::chromium(Config::getSystemConfiguration('gotenberg')['base_url']);
-            if (method_exists($chrome, 'screenshot')) {
-                // only v2 of Gotenberg lib is supported
-                self::$supportedAdapter = 'gotenberg';
-            }
+            self::$supportedAdapter = 'gotenberg';
         }
 
         if (!self::$supportedAdapter && class_exists(BrowserFactory::class)) {
             $chromiumUri = Config::getSystemConfiguration('chromium')['uri'];
-            if (!empty($chromiumUri)) {
+            if ($chromiumUri) {
                 try {
                     if ((new Connection($chromiumUri))->connect()) {
                         self::$supportedAdapter = 'chromium';
@@ -107,20 +103,17 @@ class HtmlToImage
     {
         try {
             $request = GotenbergAPI::chromium(Config::getSystemConfiguration('gotenberg')['base_url']);
-            if (method_exists($request, 'screenshot')) {
-                $sizes = explode(',', $windowSize);
-                $urlResponse = $request->screenshot()
-                    ->width((int) $sizes[0])
-                    ->height((int) $sizes[1])
-                    ->png()
-                    ->url($url);
+            $sizes = explode(',', $windowSize);
+            $urlResponse = $request->screenshot()
+                ->width((int) $sizes[0])
+                ->height((int) $sizes[1])
+                ->png()
+                ->url($url);
 
-                $file = GotenbergAPI::save($urlResponse, PIMCORE_SYSTEM_TEMP_DIRECTORY);
+            $file = GotenbergAPI::save($urlResponse, PIMCORE_SYSTEM_TEMP_DIRECTORY);
 
-                return rename(PIMCORE_SYSTEM_TEMP_DIRECTORY . '/' . $file, $outputFile);
-            }
-
-        } catch (Exception $e) {
+            return rename(PIMCORE_SYSTEM_TEMP_DIRECTORY . '/' . $file, $outputFile);
+        } catch (Exception) {
             // nothing to do
         }
 

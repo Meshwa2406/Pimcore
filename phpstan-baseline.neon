@@ -379,12 +379,6 @@ parameters:
 			path: lib/Image/Chromium.php
 
 		-
-			message: '#^Call to function method_exists\(\) with Gotenberg\\Modules\\Chromium and ''screenshot'' will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 2
-			path: lib/Image/HtmlToImage.php
-
-		-
 			message: '#^File is missing a "declare\(strict_types\=1\)" declaration\.$#'
 			identifier: ergebnis.declareStrictTypes
 			count: 1
