@@ -1698,7 +1698,8 @@ class Service extends Model\Element\Service
     public static function getCsvData(string $requestedLanguage, LocaleServiceInterface $localeService, Listing $list, array $fields, string $header = '', bool $addTitles = true, array $context = []): array
     {
         $data = [];
-        Logger::debug('objects in list:' . count($list->getObjects()));
+        $objects = $list->getObjects();
+        Logger::debug('objects in list:' . count($objects));
 
         if (class_exists(GridData\DataObject::class)) {
             $helperDefinitions = GridData\DataObject::getHelperDefinitions();
@@ -1706,7 +1707,7 @@ class Service extends Model\Element\Service
             $helperDefinitions = self::getHelperDefinitions();
         }
 
-        foreach ($list->getObjects() as $object) {
+        foreach ($objects as $object) {
             if ($fields) {
                 if ($addTitles && empty($data)) {
                     $tmp = [];
