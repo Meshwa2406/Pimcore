@@ -1643,18 +1643,21 @@ class Service extends Model\Element\Service
 
         foreach ($fields as $field) {
             $key = $field['key'];
-            if (static::isHelperGridColumnConfig($key) && $validLanguages = static::expandGridColumnForExport($helperDefinitions, $key)) {
-                $mappedFieldnameBase = self::mapFieldname($field, $helperDefinitions, $header);
+            if (static::isHelperGridColumnConfig($key)) {
+                $validLanguages = static::expandGridColumnForExport($helperDefinitions, $key);
+                if ($validLanguages) {
+                    $mappedFieldnameBase = self::mapFieldname($field, $helperDefinitions, $header);
 
-                foreach ($validLanguages as $validLanguage) {
-                    $localeService->setLocale($validLanguage);
-                    $fieldData = self::getCsvFieldData($currentLocale, $key, $object, $validLanguage, $helperDefinitions);
-                    $localizedFieldKey = $key . '-' . $validLanguage;
-                    if ($returnMappedFieldNames && !isset($mappedFieldnames[$localizedFieldKey])) {
-                        $mappedFieldnames[$localizedFieldKey] = $mappedFieldnameBase . '-' . $validLanguage;
-                        $objectData[$mappedFieldnames[$localizedFieldKey]] = $fieldData;
-                    } else {
-                        $objectData[$localizedFieldKey] = $fieldData;
+                    foreach ($validLanguages as $validLanguage) {
+                        $localeService->setLocale($validLanguage);
+                        $fieldData = self::getCsvFieldData($currentLocale, $key, $object, $validLanguage, $helperDefinitions);
+                        $localizedFieldKey = $key . '-' . $validLanguage;
+                        if ($returnMappedFieldNames && !isset($mappedFieldnames[$localizedFieldKey])) {
+                            $mappedFieldnames[$localizedFieldKey] = $mappedFieldnameBase . '-' . $validLanguage;
+                            $objectData[$mappedFieldnames[$localizedFieldKey]] = $fieldData;
+                        } else {
+                            $objectData[$localizedFieldKey] = $fieldData;
+                        }
                     }
                 }
             } else {
@@ -1695,7 +1698,7 @@ class Service extends Model\Element\Service
     public static function getCsvData(string $requestedLanguage, LocaleServiceInterface $localeService, Listing $list, array $fields, string $header = '', bool $addTitles = true, array $context = []): array
     {
         $data = [];
-        Logger::debug('objects in list:' . $list->getTotalCount());
+        Logger::debug('objects in list:' . $list->getCount());
 
         if (class_exists(GridData\DataObject::class)) {
             $helperDefinitions = GridData\DataObject::getHelperDefinitions();
