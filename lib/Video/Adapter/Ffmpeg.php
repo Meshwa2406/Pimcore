@@ -40,7 +40,7 @@ class Ffmpeg extends Adapter
     public function isAvailable(): bool
     {
         try {
-            $ffmpeg = self::getFfmpegCli();
+            $ffmpeg = static::getFfmpegCli();
             $phpCli = Console::getPhpCli();
             if ($ffmpeg && $phpCli) {
                 return true;
@@ -103,7 +103,7 @@ class Ffmpeg extends Adapter
             } elseif ($this->getFormat() == 'webm') {
                 // check for vp9 support
                 $webmCodec = 'libvpx';
-                $process = new Process([self::getFfmpegCli(), '-codecs']);
+                $process = new Process([static::getFfmpegCli(), '-codecs']);
                 $process->run();
                 $codecs = $process->getOutput();
                 if (stripos($codecs, 'vp9')) {
@@ -169,7 +169,7 @@ class Ffmpeg extends Adapter
                 }
                 array_unshift($command, '-ss', $this->inputSeeking);
             }
-            array_unshift($command, self::getFfmpegCli());
+            array_unshift($command, static::getFfmpegCli());
 
             Console::addLowProcessPriority($command);
             $process = new Process($command);
@@ -210,26 +210,23 @@ class Ffmpeg extends Adapter
 
     public function saveImage(string $file, ?int $timeOffset = null): void
     {
-        $cli = static::getFfmpegCli();
-        if ($cli) {
-            $cmd = [
-                $cli,
-                '-ss',
-                (string) ($timeOffset ?? 5),
-                '-i',
-                realpath($this->file),
-                '-vcodec',
-                'png',
-                '-vframes',
-                '1',
-                '-vf',
-                'scale=iw*sar:ih',
-                str_replace('/', DIRECTORY_SEPARATOR, $file),
-            ];
-            Console::addLowProcessPriority($cmd);
-            $process = new Process($cmd);
-            $process->run();
-        }
+        $cmd = [
+            static::getFfmpegCli(),
+            '-ss',
+            (string) ($timeOffset ?? 5),
+            '-i',
+            realpath($this->file),
+            '-vcodec',
+            'png',
+            '-vframes',
+            '1',
+            '-vf',
+            'scale=iw*sar:ih',
+            str_replace('/', DIRECTORY_SEPARATOR, $file),
+        ];
+        Console::addLowProcessPriority($cmd);
+        $process = new Process($cmd);
+        $process->run();
     }
 
     /**
@@ -240,7 +237,7 @@ class Ffmpeg extends Adapter
     {
         $tmpFile = PIMCORE_SYSTEM_TEMP_DIRECTORY . '/video-info-' . uniqid() . '.out';
 
-        $cmd = [self::getFfmpegCli(), '-i', realpath($this->file)];
+        $cmd = [static::getFfmpegCli(), '-i', realpath($this->file)];
         Console::addLowProcessPriority($cmd);
         $process = new Process($cmd);
         $process->start();
