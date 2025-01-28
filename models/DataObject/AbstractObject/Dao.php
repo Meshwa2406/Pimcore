@@ -84,7 +84,7 @@ class Dao extends Model\Element\Dao
     /**
      * @throws \Exception
      */
-    public function update(bool $isUpdate = null): void
+    public function update(?bool $isUpdate = null): void
     {
         $object = $this->model->getObjectVars();
 
@@ -378,7 +378,7 @@ class Dao extends Model\Element\Dao
             DataObject::OBJECT_TYPE_VARIANT,
             DataObject::OBJECT_TYPE_FOLDER,
         ],
-        User $user = null
+        ?User $user = null
     ): int {
         if (!$this->model->getId()) {
             return 0;
@@ -386,7 +386,7 @@ class Dao extends Model\Element\Dao
 
         $query = 'SELECT COUNT(*) AS count FROM objects o WHERE parentId = ?';
 
-        if (!empty($objectTypes)) {
+        if ($objectTypes) {
             $query .= sprintf(' AND `type` IN (\'%s\')', implode("','", $objectTypes));
         }
 
