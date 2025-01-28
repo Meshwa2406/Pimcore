@@ -92,7 +92,7 @@ class ObjectUserProvider implements UserProviderInterface
             throw new UnsupportedUserException();
         }
 
-        return call_user_func_array([$this->className, 'getById'], [$user->getId()]);
+        return $this->className::getById($user->getId());
     }
 
     public function supportsClass(string $class): bool
