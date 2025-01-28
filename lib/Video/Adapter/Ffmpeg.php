@@ -58,7 +58,7 @@ class Ffmpeg extends Adapter
      */
     public static function getFfmpegCli(): false|string
     {
-        return \Pimcore\Tool\Console::getExecutable('ffmpeg', true);
+        return Console::getExecutable('ffmpeg', true);
     }
 
     public function load(string $file, array $options = []): static
@@ -210,15 +210,14 @@ class Ffmpeg extends Adapter
 
     public function saveImage(string $file, ?int $timeOffset = null): void
     {
-        $cli = self::getFfmpegCli();
-        $file = realpath($this->file);
-        if ($cli && $file) {
+        $cli = static::getFfmpegCli();
+        if ($cli) {
             $cmd = [
                 $cli,
                 '-ss',
                 (string) ($timeOffset ?? 5),
                 '-i',
-                $file,
+                realpath($this->file),
                 '-vcodec',
                 'png',
                 '-vframes',
