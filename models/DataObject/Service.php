@@ -1670,7 +1670,6 @@ class Service extends Model\Element\Service
 
         $localeService->setLocale($currentLocale);
 
-
         $event = new DataObjectEvent($object, ['objectData' => $objectData,
             'context' => $context,
             'requestedLanguage' => $requestedLanguage,
