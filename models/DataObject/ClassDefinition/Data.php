@@ -18,7 +18,6 @@ namespace Pimcore\Model\DataObject\ClassDefinition;
 use Closure;
 use Exception;
 use JsonSerializable;
-use LogicException;
 use Pimcore\Db\Helper;
 use Pimcore\Model;
 use Pimcore\Model\DataObject;
