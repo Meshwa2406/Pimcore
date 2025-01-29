@@ -235,7 +235,8 @@ class ElementListener implements EventSubscriberInterface, LoggerAwareInterface
         }
 
         $this->logObjectLoading(
-            $object, 'Loading object {object} ({objectId}) for classic admin preview from session'
+            $object,
+            'Loading object {object} ({objectId}) for classic admin preview from session'
         );
 
         $this->cacheObject($object);
@@ -249,7 +250,8 @@ class ElementListener implements EventSubscriberInterface, LoggerAwareInterface
         }
 
         $this->logObjectLoading(
-            $object, 'Loading object {object} ({objectId}) for studio preview'
+            $object,
+            'Loading object {object} ({objectId}) for studio preview'
         );
 
         $this->cacheObject($object);
@@ -265,7 +267,7 @@ class ElementListener implements EventSubscriberInterface, LoggerAwareInterface
 
         $version = $dataObject->getLatestVersion($user->getId());
 
-        if($version === null || !$version->getData() instanceof Concrete) {
+        if ($version === null || !$version->getData() instanceof Concrete) {
             return null;
         }
 
