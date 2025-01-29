@@ -42,22 +42,18 @@ class GotenbergHelper
             return false;
         }
 
-        $request = null;
-
         $chrome = GotenbergAPI::chromium(Config::getSystemConfiguration('gotenberg')['base_url']);
         $request = $chrome->screenshot()->html(Stream::string('dummy.html', '<body></body>'));
 
-        if ($request) {
-            try {
-                GotenbergAPI::send($request);
-                self::$validPing = true;
+        try {
+            GotenbergAPI::send($request);
+            self::$validPing = true;
 
-                return true;
-            } catch (Exception $e) {
-                // nothing to do
-            }
+            return true;
+        } catch (Exception $e) {
+            // nothing to do
         }
-
+    
         return false;
     }
 }
