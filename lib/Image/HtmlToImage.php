@@ -42,8 +42,6 @@ class HtmlToImage
         self::$supportedAdapter = '';
 
         if (GotenbergHelper::isAvailable()) {
-            /** @var GotenbergAPI|object $chrome */
-            $chrome = GotenbergAPI::chromium(Config::getSystemConfiguration('gotenberg')['base_url']);
             self::$supportedAdapter = 'gotenberg';
         }
 

@@ -44,7 +44,6 @@ class GotenbergHelper
 
         $request = null;
 
-        /** @var GotenbergAPI|object $chrome */
         $chrome = GotenbergAPI::chromium(Config::getSystemConfiguration('gotenberg')['base_url']);
         $request = $chrome->screenshot()->html(Stream::string('dummy.html', '<body></body>'));
 
