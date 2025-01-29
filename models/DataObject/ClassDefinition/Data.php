@@ -1265,8 +1265,6 @@ abstract class Data implements DataObject\ClassDefinition\Data\TypeDeclarationSu
     }
 
     /**
-     * @throws LogicException
-     *
      * TODO Change return type to array in Pimcore 12
      */
     public function appendData(?array $existingData, array $additionalData): ?array
@@ -1275,8 +1273,6 @@ abstract class Data implements DataObject\ClassDefinition\Data\TypeDeclarationSu
     }
 
     /**
-     * @throws LogicException
-     *
      * TODO Change return type to array in Pimcore 12
      */
     public function removeData(?array $existingData, array $removeData): mixed
