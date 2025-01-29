@@ -1699,15 +1699,14 @@ class Service extends Model\Element\Service
         $data = [];
         Logger::debug('objects in list:' . $list->getCount());
 
-        if (class_exists(GridData\DataObject::class)) {
-            $helperDefinitions = GridData\DataObject::getHelperDefinitions();
-        } else {
-            $helperDefinitions = self::getHelperDefinitions();
-        }
-
-        $objects = $list->getObjects();
-
         if ($fields) {
+            if (class_exists(GridData\DataObject::class)) {
+                $helperDefinitions = GridData\DataObject::getHelperDefinitions();
+            } else {
+                $helperDefinitions = self::getHelperDefinitions();
+            }
+
+            $objects = $list->getObjects();
             foreach ($objects as $object) {
                 if ($addTitles && empty($data)) {
                     $tmp = [];
