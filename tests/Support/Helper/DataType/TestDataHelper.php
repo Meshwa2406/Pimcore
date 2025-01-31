@@ -137,7 +137,7 @@ class TestDataHelper extends AbstractTestDataHelper
     {
         $getter = 'get' . ucfirst($field);
         $value = $object->$getter();
-        $expected = ['1', '2'];
+        $expected = ['AU', 'IT'];
 
         $this->assertEquals($expected, $value);
     }
@@ -520,7 +520,7 @@ class TestDataHelper extends AbstractTestDataHelper
     {
         $getter = 'get' . ucfirst($field);
         $value = $object->$getter();
-        $expected = ['1', '3'];
+        $expected = ['de', 'it'];
 
         $this->assertEquals($expected, $value);
     }
@@ -568,7 +568,7 @@ class TestDataHelper extends AbstractTestDataHelper
     {
         $getter = 'get' . ucfirst($field);
         $value = $object->$getter();
-        $expected = ['1', '2'];
+        $expected = ['cat', 'tiger'];
 
         $this->assertIsEqual($object, $field, $expected, $value);
         $this->assertEquals($expected, $value);
@@ -1026,7 +1026,7 @@ class TestDataHelper extends AbstractTestDataHelper
     public function fillCountryMultiSelect(Concrete $object, string $field, int $seed = 1): void
     {
         $setter = 'set' . ucfirst($field);
-        $object->$setter(['1', '2']);
+        $object->$setter(['AU', 'IT']);
     }
 
     public function fillDate(Concrete $object, string $field, int $seed = 1): void
@@ -1223,7 +1223,7 @@ class TestDataHelper extends AbstractTestDataHelper
     public function fillLanguageMultiSelect(Concrete $object, string $field, int $seed = 1): void
     {
         $setter = 'set' . ucfirst($field);
-        $object->$setter(['1', '2']);
+        $object->$setter(['de', 'it']);
     }
 
     public function fillLastname(Concrete $object, string $field, int $seed = 1, ?string $language = null): void
@@ -1271,7 +1271,7 @@ class TestDataHelper extends AbstractTestDataHelper
     public function fillMultiSelect(Concrete $object, string $field, int $seed = 1): void
     {
         $setter = 'set' . ucfirst($field);
-        $object->$setter(['1', '2']);
+        $object->$setter(['cat', 'tiger']);
     }
 
     public function fillMultihref(Concrete $object, string $field, int $seed = 1): void
